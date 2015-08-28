@@ -1,18 +1,26 @@
 import scala.util.Random
+import scala.collection.mutable.ListBuffer
 
-object Person {
+class Person {
   var position = (Random.nextInt,Random.nextInt)
-  def Transport: Int = 0
+}
+
+var People = new ListBuffer[Person]
+for( p <- 0 to 255){
+  var P = new Person
+  People += P
+}
+
+def Transport(p: Person) = p
+
+while(true){
+  People.map(Transport)
+}
+
+
+#routing engine
   ModeChoice = Safety, Speed, Comfort, Cost
     BicycleInBikeLane = 90,speed,90
     BicycleInProtectedBikeLane = 99,speed,90
     Bus = 100, speed, 90
     Car = 90, speed, 90
-}
-#http://www.scala-lang.org/api/current/index.html#scala.collection.mutable.LazyBuilder
-val P1 = Person
-val P2 = Person
-
-val People = List(P1,P2)
-
-People.map(Transport)
