@@ -12,11 +12,12 @@ class Person {
   var length = 2
 }
 
-var People = new ListBuffer[Person]
+var mutablePeople = new ListBuffer[Person]
 for( p <- 0 to 255){
   var P = new Person
-  People += P
+  mutablePeople += P
 }
+val People = mutablePeople.toList
 
 def Transport(p: Person) {
   p.x = p.x + 1
