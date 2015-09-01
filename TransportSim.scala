@@ -2,7 +2,14 @@ import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
 class Person {
-  var position = (Random.nextInt,Random.nextInt)
+  var arrived = false
+  var travelTime = 0
+  var route = List()
+  var currentRouteSegment = 0
+  var x = Random.nextInt
+  var y = Random.nextInt
+  var width = 2
+  var length = 2
 }
 
 var People = new ListBuffer[Person]
@@ -11,9 +18,18 @@ for( p <- 0 to 255){
   People += P
 }
 
-def Transport(p: Person) = p
+def Transport(p: Person) {
+  p.x = p.x + 1
+  p.y = p.y + 1
+}
 
-while(true){
+def ViewPosition(p: Person) {
+  println(p.x,p.y)
+}
+
+for (a <- 1 to 10) {
+  println("Round " + a)
+  People.map(ViewPosition)
   People.map(Transport)
 }
 
