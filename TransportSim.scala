@@ -1,7 +1,21 @@
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
+Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
+Freeway Route - enter, drive until you exit.
+
+object WaySegment1 {
+  val NorthLanes(Sidewalk, ParkingLane, BikeLane, CarLane, CarLane)
+  val SouthLanes(Sidewalk, ParkingLane, BikeLane, CarLane, CarLane)
+}
+
+object WaySegment2 {
+  val NorthLanes(FreewayLane, FreewayLane, FreewayLane, FreewayLane)
+  val SouthLanes(FreewayLane, FreewayLane, FreewayLane, FreewayLane)
+}
+
 class Person {
+  var mode = "pedestrian"
   var arrived = false
   var travelTime = 0
   var route = List()
@@ -14,7 +28,7 @@ class Person {
 
 def generatePeople {
   var mutablePeople = new ListBuffer[Person]
-  for( p <- 0 to 255){
+  for( p <- 0 to 4){
     var P = new Person
     mutablePeople += P
   }  
@@ -23,8 +37,8 @@ def generatePeople {
 val People = generatePeople
 
 def Transport(p: Person) {
-  p.x = p.x + 1
-  p.y = p.y + 1
+  p.x = p.x + Random.nextInt
+  p.y = p.y + Random.nextInt
 }
 
 def ViewPosition(p: Person) {
