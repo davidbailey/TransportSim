@@ -1,4 +1,4 @@
-TransportSim.scala: A transportation simulation. Still in development.
+TransportSim: A transportation simulation. Still in development.
 
 1. regionModel      - generates a model for the region
 2. peopleGenerator  - generates people (sources and destinations) for the region
