@@ -1,4 +1,4 @@
-TransportSim: A transportation simulation. Still in development.
+TransportSim: A transportation simulation.
 
 [![Build Status](https://travis-ci.org/davidbailey/TransportSim.svg?branch=master)](https://travis-ci.org/davidbailey/TransportSim)
 

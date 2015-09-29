@@ -26,31 +26,32 @@ class Person {
   var length = 2
 }
 
-def generatePeople {
-  var mutablePeople = new ListBuffer[Person]
-  for( p <- 0 to 4){
-    var P = new Person
-    mutablePeople += P
-  }  
-  mutablePeople.toList
-}
-val People = generatePeople
+object Main {
+  def generatePeople {
+    var mutablePeople = new ListBuffer[Person]
+    for( p <- 0 to 4){
+      var P = new Person
+      mutablePeople += P
+    }  
+    mutablePeople.toList
+  }
+  val People = generatePeople
 
-def Transport(p: Person) {
-  p.x = p.x + Random.nextInt
-  p.y = p.y + Random.nextInt
-}
+  def Transport(p: Person) {
+    p.x = p.x + Random.nextInt
+    p.y = p.y + Random.nextInt
+  }
 
-def ViewPosition(p: Person) {
-  println(p.x,p.y)
-}
+  def ViewPosition(p: Person) {
+    println(p.x,p.y)
+  }
 
-for (a <- 1 to 10) {
-  println("Round " + a)
- // People.map(ViewPosition)
- // People.map(Transport)
+  for (a <- 1 to 10) {
+    println("Round " + a)
+   // People.map(ViewPosition)
+   // People.map(Transport)
+  }
 }
-
 
 /*
 #routing engine
