@@ -14,8 +14,9 @@ object WaySegment2 {
   val SouthLanes(FreewayLane, FreewayLane, FreewayLane, FreewayLane)
 }
 */
-class Person {
-  var mode = "pedestrian"
+
+class Person { // basic agent
+  var inVehicle = false
   var arrived = false
   var travelTime = 0
   var route = List()
@@ -24,6 +25,44 @@ class Person {
   var y = Random.nextInt
   var width = 2
   var length = 2
+}
+
+class Vehicle {
+  var driver: Person
+  var passengers = new ListBuffer[Person]
+  def addDriver(driver: Person) {
+  }
+  def removeDriver(driver: Person) {
+  }
+  def addPassenger (passenger: Person) {
+  }
+  def removePassenger (passenger: Person) {
+  }
+  def drive() { // very complicated drive function
+  }
+}
+
+class Bicycle (Vehicle) {
+  var maxPassengers = 0
+}
+
+class Sedan (Vehicle) {
+  var maxPassengers = 4
+}
+
+class Bus (Vehicle) {
+  var maxPassengers = 84
+}
+
+class Train (Vehicle) {
+}
+
+class LightRail (Train) {
+  var maxPassengers = 220
+}
+
+class HeavyRail (Train) {
+  var maxPassengers = 800
 }
 
 object Main {
