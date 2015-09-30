@@ -1,4 +1,0 @@
-OpenStreet Map API -> Region Model
-1. Prompt user for a bounding box.
-2. Connect to Overpass API and pull all ways (roads, freeways, sidewalks, bike paths, rail transit) in the bounding box.
-3. Convert those ways into a Region Model TransportSim can use.

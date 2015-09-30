@@ -1,2 +1,0 @@
-foreach Person in People:
-  OpenStreet Map -> Route Model
