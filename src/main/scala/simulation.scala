@@ -58,7 +58,7 @@ val nullCar: Car = null
 
 abstract class Bus extends Vehicle {
   var driver = nullPerson
-  maxPassengers = 84
+  val maxPassengers = 84
   val width = 8.0
   val length = 40.0
 }
@@ -67,11 +67,11 @@ abstract class Train extends Vehicle {
 }
 
 abstract class LightRail extends Train {
-  maxPassengers = 220
+  val maxPassengers = 220
 }
 
 abstract class HeavyRail extends Train {
-  maxPassengers = 800
+  val maxPassengers = 800
 }
 
 class parkingSpace {
