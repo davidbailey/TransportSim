@@ -15,6 +15,8 @@ object WaySegment2 {
 }
 */
 
+object Main {
+
 class Person { // basic agent
   var inVehicle = false
   var arrived = false
@@ -82,7 +84,6 @@ class parkingSpace {
   var occupant = nullCar
 }
 
-object Main {
   def generatePeople {
     var mutablePeople = new ListBuffer[Person]
     for( p <- 0 to 17000000){
