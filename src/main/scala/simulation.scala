@@ -27,54 +27,72 @@ class Person { // basic agent
   var length = 2
 }
 
+val nullPerson: Person = null
+val p1 = new Person
+p1.getClass.getName
+
 abstract class Vehicle {
-  var driver: Person
-  var passengers = new ListBuffer[Person]
-  def addDriver(driver: Person) {
-  }
-  def removeDriver(driver: Person) {
-  }
-  def addPassenger (passenger: Person) {
-  }
-  def removePassenger (passenger: Person) {
-  }
-  def drive() { // very complicated drive function
-  }
+  def vehicleType: String
+  def driver: Person
+  def passengers = ListBuffer[Person]()
+  def maxPassengers: Int
+  def width: Double
+  def length: Double
 }
 
-abstract class Bicycle extends Vehicle {
-  var maxPassengers = 0
+class Bicycle extends Vehicle {
+  var driver = nullPerson
+  val maxPassengers = 1
+  val width = 2.0 + Random.nextDouble
+  val length = 6.0 + Random.nextDouble
 }
 
-abstract class Car extends Vehicle {
-  var maxPassengers = 4
+class Car extends Vehicle {
+  var driver = nullPerson
+  val maxPassengers = 4
+  val width = 6.0 + Random.nextDouble
+  val length = 12.0 + Random.nextDouble
 }
+
+val nullCar: Car = null
 
 abstract class Bus extends Vehicle {
-  var maxPassengers = 84
+  var driver = nullPerson
+  maxPassengers = 84
+  val width = 8.0
+  val length = 40.0
 }
 
 abstract class Train extends Vehicle {
 }
 
 abstract class LightRail extends Train {
-  var maxPassengers = 220
+  maxPassengers = 220
 }
 
 abstract class HeavyRail extends Train {
-  var maxPassengers = 800
+  maxPassengers = 800
+}
+
+class parkingSpace {
+  val width = 8.0
+  val length = 16.0
+  val x = Random.nextInt
+  val y = Random.nextInt
+  var occupant = nullCar
 }
 
 object Main {
   def generatePeople {
     var mutablePeople = new ListBuffer[Person]
-    for( p <- 0 to 4){
+    for( p <- 0 to 17000000){
       var P = new Person
       mutablePeople += P
     }  
     mutablePeople.toList
   }
   val People = generatePeople
+  
 
   def Transport(p: Person) {
     p.x = p.x + Random.nextInt
