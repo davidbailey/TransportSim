@@ -19,14 +19,15 @@ object Main {
 
 class Person { // basic agent
   var inVehicle = false
+  var isDriver = false
   var arrived = false
-  var travelTime = 0
+  var travelTime: Int = 0
   var route = List()
   var currentRouteSegment = 0
   var x = Random.nextInt
   var y = Random.nextInt
-  var width = 2
-  var length = 2
+  var width = 1.5 + Random.nextDouble
+  var length = 1 + Random.nextDouble
 }
 
 val nullPerson: Person = null
@@ -34,7 +35,6 @@ val p1 = new Person
 p1.getClass.getName
 
 abstract class Vehicle {
-  def vehicleType: String
   def driver: Person
   def passengers = ListBuffer[Person]()
   def maxPassengers: Int
