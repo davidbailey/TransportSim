@@ -28,28 +28,43 @@ class Person { // basic agent
   var y = Random.nextInt
   var width = 1.5 + Random.nextDouble
   var length = 1 + Random.nextDouble
+  def view {
+    print("{\"type\"=\"person\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
+  }
 }
 
 val nullPerson: Person = null
 val p1 = new Person
+p1.view
 p1.getClass.getName
 
 abstract class Vehicle {
   def driver: Person
+  def subtype: String
   def passengers = ListBuffer[Person]()
   def maxPassengers: Int
   def width: Double
   def length: Double
+  var x = Random.nextInt
+  var y = Random.nextInt
+  def view {
+    print("{\"type\":\"Vehicle\", \"subtype:\"" + this.subtype + "\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
+  }
 }
 
 class Bicycle extends Vehicle {
+  val subtype = "Bicycle"
   var driver = nullPerson
   val maxPassengers = 1
   val width = 2.0 + Random.nextDouble
   val length = 6.0 + Random.nextDouble
 }
 
+val b1 = new Bicycle
+b1.view
+
 class Car extends Vehicle {
+  val subtype = "Car"
   var driver = nullPerson
   val maxPassengers = 4
   val width = 6.0 + Random.nextDouble
@@ -59,6 +74,7 @@ class Car extends Vehicle {
 val nullCar: Car = null
 
 abstract class Bus extends Vehicle {
+  val subtype = "Bus"
   var driver = nullPerson
   val maxPassengers = 84
   val width = 8.0
@@ -66,13 +82,16 @@ abstract class Bus extends Vehicle {
 }
 
 abstract class Train extends Vehicle {
+  val subtype = "Train"
 }
 
 abstract class LightRail extends Train {
+  val subtype = "LightRail"
   val maxPassengers = 220
 }
 
 abstract class HeavyRail extends Train {
+  val subtype = "HeavyRail"
   val maxPassengers = 800
 }
 
@@ -82,7 +101,12 @@ class parkingSpace {
   val x = Random.nextInt
   val y = Random.nextInt
   var occupant = nullCar
+  def view {
+    print("{\"type\"=\"parkingSpace\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
+  }
 }
+
+val ps1 = new parkingSpace
 
   def generatePeople {
     var mutablePeople = new ListBuffer[Person]
