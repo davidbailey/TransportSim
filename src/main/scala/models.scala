@@ -17,12 +17,12 @@ package Models {
       print("{\"type\"=\"person\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
     }
   }
-
+/*
   val nullPerson: Person = null
   val p1 = new Person
   p1.view
   p1.getClass.getName
-
+*/
   abstract class Vehicle {
     def driver: Person
     def subtype: String
@@ -44,10 +44,10 @@ package Models {
     val width = 2.0 + Random.nextDouble
     val length = 6.0 + Random.nextDouble
   }
-
+/*
   val b1 = new Bicycle
   b1.view
-
+*/
   class Car extends Vehicle {
     val subtype = "Car"
     var driver = nullPerson
@@ -56,7 +56,7 @@ package Models {
     val length = 12.0 + Random.nextDouble
   }
 
-  val nullCar: Car = null
+ // val nullCar: Car = null
 
   abstract class Bus extends Vehicle {
     val subtype = "Bus"
@@ -87,5 +87,5 @@ package Models {
     }
   }
 
-  val ps1 = new parkingSpace
+  //val ps1 = new parkingSpace
 }
