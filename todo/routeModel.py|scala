@@ -1,3 +1,4 @@
 foreach Person in People:
   OpenStreet Map -> Route Model
-mabye https://github.com/orangeman/osm_routing
+maybe https://github.com/orangeman/osm_routing
+or http://wiki.openstreetmap.org/wiki/Open_Source_Routing_Machine

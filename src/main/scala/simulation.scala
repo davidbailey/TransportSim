@@ -82,7 +82,6 @@ abstract class Bus extends Vehicle {
 }
 
 abstract class Train extends Vehicle {
-  val subtype = "Train"
 }
 
 abstract class LightRail extends Train {
