@@ -1,8 +1,9 @@
-import scala.util.Random
-import scala.collection.mutable.ListBuffer
 package models
 
-class Models {
+import scala.util.Random
+import scala.collection.mutable.ListBuffer
+
+object Models {
   class Person { // basic agent
     var inVehicle = false
     var isDriver = false
