@@ -1,4 +1,7 @@
+import scala.util.Random
+import scala.collection.mutable.ListBuffer
 import models.Models._
+
 
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
