@@ -1,8 +1,10 @@
-import scala.util.Random
-import scala.collection.mutable.ListBuffer
 package models
 
 object Models {
+
+import scala.util.Random
+import scala.collection.mutable.ListBuffer
+
   class Person { // basic agent
     var inVehicle = false
     var isDriver = false
@@ -19,13 +21,9 @@ object Models {
     }
   }
 
-  val nullPerson: Person = null
-  val p1 = new Person
-  p1.view
-  p1.getClass.getName
-
   abstract class Vehicle {
-    def driver: Person
+    val nullPerson: Person = null
+    var driver = nullPerson
     def subtype: String
     def passengers = ListBuffer[Person]()
     def maxPassengers: Int
@@ -40,28 +38,20 @@ object Models {
 
   class Bicycle extends Vehicle {
     val subtype = "Bicycle"
-    var driver = nullPerson
     val maxPassengers = 1
     val width = 2.0 + Random.nextDouble
     val length = 6.0 + Random.nextDouble
   }
 
-  val b1 = new Bicycle
-  b1.view
-
   class Car extends Vehicle {
     val subtype = "Car"
-    var driver = nullPerson
     val maxPassengers = 4
     val width = 6.0 + Random.nextDouble
     val length = 12.0 + Random.nextDouble
   }
 
-  val nullCar: Car = null
-
   abstract class Bus extends Vehicle {
     val subtype = "Bus"
-    var driver = nullPerson
     val maxPassengers = 84
     val width = 8.0
     val length = 40.0
@@ -82,11 +72,10 @@ object Models {
     val length = 16.0
     val x = Random.nextInt
     val y = Random.nextInt
+    val nullCar: Car = null
     var occupant = nullCar
     def view {
       print("{\"type\"=\"parkingSpace\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
     }
   }
-
-  val ps1 = new parkingSpace
 }
