@@ -1,9 +1,10 @@
 package models
 
+object Models {
+
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
-object Models {
   class Person { // basic agent
     var inVehicle = false
     var isDriver = false
