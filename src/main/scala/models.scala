@@ -1,6 +1,6 @@
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
-package models;
+package models
 
 object Models {
   class Person { // basic agent
