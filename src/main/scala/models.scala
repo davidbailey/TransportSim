@@ -85,7 +85,7 @@ import scala.collection.mutable.ListBuffer
     val width = 4.708
   }
 
-  class Railway {
+  abstract class Railway {
     val tracks: List[Track]
   }
 
