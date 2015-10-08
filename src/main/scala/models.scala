@@ -82,7 +82,7 @@ import scala.collection.mutable.ListBuffer
   }
 
   class Track {
-    val width = 56.496
+    val width = 4.708
   }
 
   class Railway {
