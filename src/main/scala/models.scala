@@ -17,7 +17,7 @@ import scala.collection.mutable.ListBuffer
     var width = 1.5 + Random.nextDouble
     var length = 1 + Random.nextDouble
     def view {
-      print("{\"type\"=\"person\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
+      print("{\"type\":\"person\", \"x\":\"" + x + "\", y:\"" + y + "\", width:\"" + width + "\", length:\"" + length + "\"}");
     }
   }
 
@@ -29,10 +29,10 @@ import scala.collection.mutable.ListBuffer
     def maxPassengers: Int
     def width: Double
     def length: Double
-    var x = Random.nextInt
-    var y = Random.nextInt
+    var x = Random.nextInt + Random.nextDouble
+    var y = Random.nextInt + Random.nextDouble
     def view {
-      print("{\"type\":\"Vehicle\", \"subtype:\"" + this.subtype + "\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
+      print("{\"type\":\"Vehicle\", \"subtype:\"" + this.subtype + "\", \"x\":\"" + x + "\", y:\"" + y + "\", width:\"" + width + "\", length:\"" + length + "\"}");
     }
   }
 
@@ -67,7 +67,81 @@ import scala.collection.mutable.ListBuffer
     val maxPassengers = 800
   }
 
-  class parkingSpace {
+  abstract class Point { // OSM: Node
+    def x: Double
+    def y: Double
+  }
+
+  class RandomPoint extends Point {
+    val x = Random.nextDouble
+    val y = Random.nextDouble
+  }
+
+  abstract class LineString {
+    val points: List[Point]
+  }
+
+  abstract class Track {
+    val width = 56.496
+  }
+
+  class Railway {
+    val tracks: List[Track]
+  }
+
+  class Lane { 
+    val width = 10.0
+  }
+
+  class FreewayLane { 
+    val width = 12.0
+  }
+
+  class ParkingLane { 
+    val width = 10.0
+  }
+
+  class BikeLane { 
+    val width = 5.0
+  }
+
+  class BusLane { 
+    val width = 10.0
+  }
+
+  class Sidewalk { 
+    val width = 4.0
+  }
+
+  abstract class HalfRoad { // OSM: Way w/ oneway != yes
+    val lanes = List[Lane]()
+    val parkingLane: ParkingLane
+    val bikeLane: BikeLane
+    val busLane: BusLane
+    val sidewalk: Sidewalk
+  }
+
+  abstract class TwoWayRoad { // OSM: Way w/ oneway = yes
+    val wayOne: HalfRoad
+    val wayTwo: HalfRoad
+    val centerLine: LineString
+  }
+
+  abstract class OneWayRoad { // OSM: lanes (only sometimes)
+    val wayOne: HalfRoad
+    val centerLine: LineString
+  }
+
+  class OneWayFreeway {
+    val freewayLanes = List[Lane]()
+  }
+
+  abstract class Freeway {
+    val wayOne: OneWayFreeway
+    val wayTwo: OneWayFreeway
+  }
+
+  class ParkingSpace {
     val width = 8.0
     val length = 16.0
     val x = Random.nextInt
@@ -78,4 +152,5 @@ import scala.collection.mutable.ListBuffer
       print("{\"type\"=\"parkingSpace\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
     }
   }
+
 }

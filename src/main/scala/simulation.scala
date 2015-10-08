@@ -5,17 +5,6 @@ import models.Models._
 
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
-/*
-object WaySegment1 {
-  val NorthLanes(Sidewalk, ParkingLane, BikeLane, CarLane, CarLane)
-  val SouthLanes(Sidewalk, ParkingLane, BikeLane, CarLane, CarLane)
-}
-
-object WaySegment2 {
-  val NorthLanes(FreewayLane, FreewayLane, FreewayLane, FreewayLane)
-  val SouthLanes(FreewayLane, FreewayLane, FreewayLane, FreewayLane)
-}
-*/
 
 object Main {
   def generatePeople {
