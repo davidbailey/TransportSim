@@ -81,7 +81,7 @@ import scala.collection.mutable.ListBuffer
     val points: List[Point]
   }
 
-  abstract class Track {
+  class Track {
     val width = 56.496
   }
 
