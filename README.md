@@ -9,3 +9,11 @@ TransportSim: A transportation simulation.
 4. simulation       - simulates all the people moving
 5. view             - view the models and simulations
 
+Scala REPL Use:
+cd src/main/scala
+scala
+:load models.scala
+
+Documentation:
+Time is always in seconds.
+Distances have their own class and can be feet or meters.

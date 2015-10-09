@@ -5,6 +5,22 @@ object Models {
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
+  class Distance (distance: Double) {
+    def asFeet = distance
+    def asMeters = distance * 0.3048
+  }
+
+  class Point (x_in: Double, y_in: Double) { // OSM: Node
+    def x = x_in
+    def y = y_in
+  }
+
+  def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
+
+  class LineString (points_in: List[Point]) {
+    def points = points_in
+  }
+
   class Person { // basic agent
     var inVehicle = false
     var isDriver = false
@@ -12,12 +28,11 @@ import scala.collection.mutable.ListBuffer
     var travelTime: Int = 0
     var route = List()
     var currentRouteSegment = 0
-    var x = Random.nextInt
-    var y = Random.nextInt
-    var width = 1.5 + Random.nextDouble
-    var length = 1 + Random.nextDouble
+    var centroid = RandomPoint
+    var width = new Distance (1.5 + Random.nextDouble)
+    var length = new Distance (0.5 + Random.nextDouble)
     def view {
-      print("{\"type\":\"person\", \"x\":\"" + x + "\", y:\"" + y + "\", width:\"" + width + "\", length:\"" + length + "\"}");
+      print("{\"type\":\"person\", \"x\":\"" + centroid.x + "\", \"y\":\"" + centroid.y + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
   }
 
@@ -27,58 +42,48 @@ import scala.collection.mutable.ListBuffer
     def subtype: String
     def passengers = ListBuffer[Person]()
     def maxPassengers: Int
-    def width: Double
-    def length: Double
-    var x = Random.nextInt + Random.nextDouble
-    var y = Random.nextInt + Random.nextDouble
+    def width: Distance
+    def length: Distance
+    def centroid: Point
     def view {
-      print("{\"type\":\"Vehicle\", \"subtype:\"" + this.subtype + "\", \"x\":\"" + x + "\", y:\"" + y + "\", width:\"" + width + "\", length:\"" + length + "\"}");
+      print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"x\":\"" + centroid.x + "\", \"y\":\"" + centroid.y + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
   }
 
   class Bicycle extends Vehicle {
     val subtype = "Bicycle"
     val maxPassengers = 1
-    val width = 2.0 + Random.nextDouble
-    val length = 6.0 + Random.nextDouble
+    val width = new Distance (2.0 + Random.nextDouble)
+    val length = new Distance (6.0 + Random.nextDouble)
+    var centroid = RandomPoint
   }
 
   class Car extends Vehicle {
     val subtype = "Car"
     val maxPassengers = 4
-    val width = 6.0 + Random.nextDouble
-    val length = 12.0 + Random.nextDouble
+    val width = new Distance (6.0 + Random.nextDouble)
+    val length = new Distance (12.0 + Random.nextDouble)
+    var centroid = RandomPoint
   }
 
-  abstract class Bus extends Vehicle {
+  class Bus extends Vehicle {
     val subtype = "Bus"
     val maxPassengers = 84
-    val width = 8.0
-    val length = 40.0
+    val width = new Distance (8.0)
+    val length = new Distance (40.0)
+    var centroid = RandomPoint
   }
 
   abstract class LightRail extends Vehicle {
     val subtype = "LightRail"
     val maxPassengers = 220
+    var centroid = RandomPoint
   }
 
   abstract class HeavyRail extends Vehicle {
     val subtype = "HeavyRail"
     val maxPassengers = 800
-  }
-
-  abstract class Point { // OSM: Node
-    def x: Double
-    def y: Double
-  }
-
-  class RandomPoint extends Point {
-    val x = Random.nextDouble
-    val y = Random.nextDouble
-  }
-
-  abstract class LineString {
-    val points: List[Point]
+    var centroid = RandomPoint
   }
 
   class Track {
@@ -94,7 +99,7 @@ import scala.collection.mutable.ListBuffer
   }
 
   class FreewayLane { 
-    val width = 12.0
+    val width = 13.0
   }
 
   class ParkingLane { 
