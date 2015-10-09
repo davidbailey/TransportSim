@@ -19,12 +19,12 @@ object Main {
   
 
   def Transport(p: Person) {
-    p.x = p.x + Random.nextInt
-    p.y = p.y + Random.nextInt
+    //p.x = p.x + Random.nextInt
+    //p.y = p.y + Random.nextInt
   }
 
   def ViewPosition(p: Person) {
-    println(p.x,p.y)
+    p.view
   }
 
   for (a <- 1 to 10) {
