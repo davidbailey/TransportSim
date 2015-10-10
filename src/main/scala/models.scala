@@ -7,7 +7,9 @@ import scala.collection.mutable.ListBuffer
 
   class Distance (distance: Double) {
     def asFeet = distance
+    def asMiles = distance * 0.0001893939394
     def asMeters = distance * 0.3048
+    def asKilometers = 0.0003048
   }
 
   class Point (x_in: Double, y_in: Double) { // OSM: Node
