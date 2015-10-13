@@ -13,14 +13,14 @@ import scala.collection.mutable.ListBuffer
   }
 
   class Point (x_in: Double, y_in: Double) { // OSM: Node
-    def x = x_in
-    def y = y_in
+    val x = x_in
+    val y = y_in
   }
 
   def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
 
   class LineString (points_in: List[Point]) {
-    def points = points_in
+    val points = points_in
   }
 
   class Person { // basic agent
@@ -41,12 +41,12 @@ import scala.collection.mutable.ListBuffer
   abstract class Vehicle {
     val nullPerson: Person = null
     var driver = nullPerson
-    def subtype: String
-    def passengers = ListBuffer[Person]()
-    def maxPassengers: Int
-    def width: Distance
-    def length: Distance
-    def centroid: Point
+    val subtype: String
+    var passengers = ListBuffer[Person]()
+    val maxPassengers: Int
+    val width: Distance
+    val length: Distance
+    var centroid: Point
     def view {
       print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"x\":\"" + centroid.x + "\", \"y\":\"" + centroid.y + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
