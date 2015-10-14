@@ -1,1 +1,3 @@
 language: scala
+notifications:
+  slack: travisci: ${SLACK_TOKEN}
