@@ -2,6 +2,7 @@ import os
 import io
 from shapely.geometry import Polygon
 
+# todo switch to 2010 tracts
 tractDirectory = os.path.expanduser('~/Desktop/maps/TRACT/')
 tractFiles = os.listdir(tractDirectory)
 
@@ -18,7 +19,10 @@ for tracts in tractList:
     if tract['geometry'].within(boundingBox):
       tractsInBox.append(tract)
 
-
-
-#Residential/Commercial Densities -> Sources + Destinations (People)
-#http://onthemap.ces.census.gov/cgi-bin/mobile_report.py
+trips = []
+for tract in tractsInBox
+  trips.append(getOriginAndDestination(tract.NAME))
+  
+# connect to http://onthemap.ces.census.gov/cgi-bin/mobile_report.py and pull origins and destinations for work trips within census tracts
+# ^ returns origin(lon,lat) and destination(lon,lat) http://lehd.ces.census.gov/data/#lodes
+# connect to osm and route ^ (this is route.py|scala)
