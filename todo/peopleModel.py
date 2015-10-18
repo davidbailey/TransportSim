@@ -23,10 +23,20 @@ for tracts in tractList:
     if tract['geometry'].within(boundingBox):
       tractsInBox.append(tract)
 
-ca_xwalk = pandas.DataFrame.from_csv(os.path.expanduser('~/Desktop/maps/ca_od_2013/ca_xwalk.csv'))
+# ca_xwalk = pandas.DataFrame.from_csv(os.path.expanduser('~/Desktop/maps/ca_od_2013/ca_xwalk.csv'), index_col=False)
+
+ca_od_main_2013s = []
+for i in range(1,6):
+  ca_od_main_i_2013 = pandas.DataFrame.from_csv(os.path.expanduser('~/Desktop/maps/ca_od_2013/ca_od_main_JT0' + i + '_2013.csv'), index_col=False)
+  ca_od_main_2013s.append(ca_od_main_i_2013)
+  
+ca_od_main_2013 = pandas.concat(ca_od_main_2013s)
+# w_coded = pandas.merge(ca_od_main_2013, ca_xwalk, how='inner', left_on='w_geocode', right_on='tabblk2010')
+# wh_coded = pandas.merge(w_coded, ca_xwalk, how='inner', left_on='h_geocode', right_on='tabblk2010')
 
 trips = []
-for tract in tractsInBox
-  trips.append(getOriginAndDestination(tract.NAME))
+for name, row in wh_coded.iterrows():
+  for i in range(0,row['S000'])
+    trips.append((oGeometry,dGeometry))
   
 # connect to osm and route ^ (this is route.py|scala)
