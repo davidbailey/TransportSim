@@ -7,21 +7,16 @@ import geopandas
 import pandas
 from shapely.geometry import Polygon
 
-tractDirectory = os.path.expanduser('~/Desktop/maps/TRACT/')
-tractFiles = os.listdir(tractDirectory)
-
-tractList = []
-for tractFile in tractFiles:
-  tractList.append(geopandas.GeoDataFrame.from_file('/', vfs = 'zip://' + tractDirectory + tractFile))
+tractFile = os.path.expanduser('~/Desktop/maps/tl_2010_06_tabblock10.zip')
+tracts = geopandas.GeoDataFrame.from_file('/', vfs = 'zip://' + tractFile)
 
 xmax, xmin, ymax, ymin = (-119.97, -116.80, 34.80, 33.33)
 boundingBox = Polygon([(xmax, ymax), (xmin, ymax), (xmin, ymin), (xmax, ymin)])
 
 tractsInBox = []
-for tracts in tractList:
-  for name, tract in tracts.iterrows():
-    if tract['geometry'].within(boundingBox):
-      tractsInBox.append(tract)
+for name, tract in tracts.iterrows():
+  if tract['geometry'].within(boundingBox):
+    tractsInBox.append(tract)
 
 tracts = geopandas.GeoDataFrame(tractsInBox)
 
@@ -32,12 +27,12 @@ for i in range(1,6):
 
 ca_od_main_2013 = pandas.concat(ca_od_main_2013s)
 
-first11 = lambda x: '0' + unicode(x)[0:10]
+fix = lambda x: '0' + unicode(x)
 
 ca_od_main_2013['wGEOID'] = ca_od_main_2013['w_geocode']
-ca_od_main_2013['wGEOID'] = ca_od_main_2013['wGEOID'].apply(first11)
+ca_od_main_2013['wGEOID'] = ca_od_main_2013['wGEOID'].apply(fix)
 ca_od_main_2013['hGEOID'] = ca_od_main_2013['h_geocode']
-ca_od_main_2013['hGEOID'] = ca_od_main_2013['hGEOID'].apply(first11)
+ca_od_main_2013['hGEOID'] = ca_od_main_2013['hGEOID'].apply(fix)
 
 w_coded = pandas.merge(ca_od_main_2013, tracts, how='inner', left_on='wGEOID', right_on='GEOID')
 wh_coded = pandas.merge(w_coded, tracts, how='inner', left_on='hGEOID', right_on='GEOID', suffixes=['W','H'])
