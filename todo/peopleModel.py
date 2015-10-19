@@ -34,10 +34,10 @@ ca_od_main_2013['wGEOID'] = ca_od_main_2013['wGEOID'].apply(fix)
 ca_od_main_2013['hGEOID'] = ca_od_main_2013['h_geocode']
 ca_od_main_2013['hGEOID'] = ca_od_main_2013['hGEOID'].apply(fix)
 
-w_coded = pandas.merge(ca_od_main_2013, tracts, how='inner', left_on='wGEOID', right_on='GEOID')
-wh_coded = pandas.merge(w_coded, tracts, how='inner', left_on='hGEOID', right_on='GEOID', suffixes=['W','H'])
+w_coded = pandas.merge(ca_od_main_2013, tracts, how='inner', left_on='wGEOID', right_on='GEOID10')
+wh_coded = pandas.merge(w_coded, tracts, how='inner', left_on='hGEOID', right_on='GEOID10', suffixes=['W','H'])
 
 trips = []
 for name, row in wh_coded.iterrows():
-  for i in range(0,row['S000'])
-    trips.append((Hgeometry,Wgeometry))
+  for i in range(0,row['S000']):
+    trips.append((row['geometryH'],row['geometryW']))
