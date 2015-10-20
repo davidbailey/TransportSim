@@ -1,11 +1,12 @@
 # tract files from http://www.census.gov/cgi-bin/geo/shapefiles2010/file-download
 # ca_od_2013 files from http://lehd.ces.census.gov/data/lodes/LODES7/
-
 import os
 import io
 import geopandas
 import pandas
+import geojson
 from shapely.geometry import Polygon
+from shapely.geometry import MultiPolygon
 
 tractFile = os.path.expanduser('~/Desktop/maps/tl_2010_06_tabblock10.zip')
 tracts = geopandas.GeoDataFrame.from_file('/', vfs = 'zip://' + tractFile)
@@ -40,4 +41,8 @@ wh_coded = pandas.merge(w_coded, tracts, how='inner', left_on='hGEOID', right_on
 trips = []
 for name, row in wh_coded.iterrows():
   for i in range(0,row['S000']):
-    trips.append((row['geometryH'],row['geometryW']))
+    trips.append((geojson.dumps(row['geometryH']),geojson.dumps(row['geometryW'])))
+
+with open(os.path.expanduser('~/Desktop/maps/trips.json'), 'w') as f:
+  json.dumps(trips,f)
+
