@@ -55,4 +55,4 @@ for name, row in wh_coded.iterrows():
     wPoint = randomPointInPolygon(row.geometryH)
     trips.append([hPoint.x, hPoint.y, wPoint.x, wPoint.y])
 
-pandas.DataFrame(trips, columns = ['hX', 'hY', 'wX', 'wY']).to_csv(os.path.expanduser('~/Desktop/maps/trips.csv')
+pandas.DataFrame(trips, columns = ['hX', 'hY', 'wX', 'wY']).to_csv(os.path.expanduser('~/Desktop/maps/trips.csv'))
