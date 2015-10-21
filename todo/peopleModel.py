@@ -5,14 +5,15 @@ import io
 import geopandas
 import pandas
 import geojson
-from shapely.geometry import Polygon
-from shapely.geometry import MultiPolygon
+import json
+from random import uniform
+from shapely.geometry import box, Point
 
 tractFile = os.path.expanduser('~/Desktop/maps/tl_2010_06_tabblock10.zip')
 tracts = geopandas.GeoDataFrame.from_file('/', vfs = 'zip://' + tractFile)
 
 xmax, xmin, ymax, ymin = (-119.97, -116.80, 34.80, 33.33)
-boundingBox = Polygon([(xmax, ymax), (xmin, ymax), (xmin, ymin), (xmax, ymin)])
+boundingBox = box(xmin, ymin, xmax, ymax)
 
 tractsInBox = []
 for name, tract in tracts.iterrows():
@@ -38,11 +39,20 @@ ca_od_main_2013['hGEOID'] = ca_od_main_2013['hGEOID'].apply(fix)
 w_coded = pandas.merge(ca_od_main_2013, tracts, how='inner', left_on='wGEOID', right_on='GEOID10')
 wh_coded = pandas.merge(w_coded, tracts, how='inner', left_on='hGEOID', right_on='GEOID10', suffixes=['W','H'])
 
+def randomPointInPolygon(polygon):
+  (xmin, ymin, xmax, ymax) = polygon.bounds
+  while True:
+    x = uniform(xmin,xmax)
+    y = uniform(ymin,ymax)
+    point = Point(x,y)
+    if point.within(polygon):
+      return point
+
 trips = []
 for name, row in wh_coded.iterrows():
   for i in range(0,row['S000']):
-    trips.append((geojson.dumps(row['geometryH']),geojson.dumps(row['geometryW'])))
+    hPoint = randomPointInPolygon(row.geometryH)
+    wPoint = randomPointInPolygon(row.geometryH)
+    trips.append([hPoint.x, hPoint.y, wPoint.x, wPoint.y])
 
-with open(os.path.expanduser('~/Desktop/maps/trips.json'), 'w') as f:
-  json.dumps(trips,f)
-
+pandas.DataFrame(trips, columns = ['hX', 'hY', 'wX', 'wY']).to_csv(os.path.expanduser('~/Desktop/maps/trips.csv')
