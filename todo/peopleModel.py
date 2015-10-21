@@ -4,8 +4,6 @@ import os
 import io
 import geopandas
 import pandas
-import geojson
-import json
 from random import uniform
 from shapely.geometry import box, Point
 
@@ -52,7 +50,7 @@ trips = []
 for name, row in wh_coded.iterrows():
   for i in range(0,row['S000']):
     hPoint = randomPointInPolygon(row.geometryH)
-    wPoint = randomPointInPolygon(row.geometryH)
-    trips.append([hPoint.x, hPoint.y, wPoint.x, wPoint.y])
+    wPoint = randomPointInPolygon(row.geometryW)
+    trips.append([hPoint.y, hPoint.x, wPoint.y, wPoint.x])
 
-pandas.DataFrame(trips, columns = ['hX', 'hY', 'wX', 'wY']).to_csv(os.path.expanduser('~/Desktop/maps/trips.csv'))
+pandas.DataFrame(trips, columns = ['hY', 'hX', 'wY', 'wX']).to_csv(os.path.expanduser('~/Desktop/maps/trips.csv'))
