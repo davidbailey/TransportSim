@@ -1,7 +1,6 @@
 # tract files from http://www.census.gov/cgi-bin/geo/shapefiles2010/file-download
 # ca_od_2013 files from http://lehd.ces.census.gov/data/lodes/LODES7/
 import os
-import io
 import geopandas
 import pandas
 from random import uniform
