@@ -7,8 +7,5 @@ trips = pandas.DataFrame.read_csv(os.path.expanduser('~/Desktop/maps/trips.csv')
 routes = []
 
 for trip in trips:
-  r = requests.get('http://localhost/query?loc=' trip)
-r.json()['remote_addr']
-
-  routes.append()
-  
+  r = requests.get('http://localhost:5000/viaroute?loc=' + trip.hY + ',' + trip.hX + '&loc=' + trip.wY + ',' + trip.wX)
+  routes.append(r.json()['route_geometry'])
