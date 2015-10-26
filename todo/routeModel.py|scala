@@ -3,7 +3,7 @@ import pandas
 import os
 import requests
 
-trips = pandas.DataFrame.read_csv(os.path.expanduser('~/Desktop/maps/trips.csv')
+trips = pandas.read_csv(os.path.expanduser('~/Desktop/maps/trips.csv'))
 routes = []
 
 for trip in trips:
