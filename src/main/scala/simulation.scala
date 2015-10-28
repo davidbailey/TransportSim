@@ -2,6 +2,9 @@ import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import models.Models._
 
+// read the network from https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
+// with https://github.com/plasmap/geow
+// read the routes from routeModel.py with https://github.com/trifectalabs/polyline-scala
 
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
