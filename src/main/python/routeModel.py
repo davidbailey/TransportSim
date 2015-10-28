@@ -9,4 +9,9 @@ routes = []
 for name, trip in trips.iterrows():
   r = requests.get('http://localhost:5000/viaroute?loc=' + str(trip.hY) + ',' + str(trip.hX) + '&loc=' + str(trip.wY) + ',' + str(trip.wX))
   routes.append(r.json()['route_geometry'])
-# save routes to a file, one line per polyline
+
+f = open(os.path.expanduser('~/Desktop/maps/routes.polystrings'), 'w')
+for route in routes:
+  f.write(route + '\n')
+
+f.close()
