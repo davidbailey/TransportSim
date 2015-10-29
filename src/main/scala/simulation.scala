@@ -6,6 +6,8 @@ import models.Models._
 // with https://github.com/plasmap/geow
 // read the routes from routeModel.py with https://github.com/trifectalabs/polyline-scala
 
+val routes = io.Source.fromFile(System.getProperty("user.home") + "/Desktop/maps/routes.polylines").getLines.toList
+
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
 
