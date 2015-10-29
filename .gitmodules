@@ -1,3 +1,6 @@
 [submodule "include/polyline-scala"]
 	path = include/polyline-scala
 	url = git@github.com:trifectalabs/polyline-scala.git
+[submodule "include/geow"]
+	path = include/geow
+	url = git@github.com:plasmap/geow.git
