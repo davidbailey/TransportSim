@@ -30,7 +30,7 @@ object TransportsimBuild extends Build {
         "ch.qos.logback" % "logback-classic" % "1.1.2" % "runtime",
         "org.eclipse.jetty" % "jetty-webapp" % "9.2.10.v20150310" % "container",
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
-        "io.plasmap" %% "geow" % "0.3.6-SNAPSHOT"
+//        "io.plasmap" %% "geow" % "0.3.6-SNAPSHOT"
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
