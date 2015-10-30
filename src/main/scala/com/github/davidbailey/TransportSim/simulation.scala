@@ -1,7 +1,7 @@
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
-import io.plasmap.parser.OsmParser
-import com.github.davidbailey.TransportSim.models.Models._
+//import io.plasmap.parser.OsmParser
+import models.Models._
 
 
 // read the network from https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
