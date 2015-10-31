@@ -5,7 +5,7 @@ import org.scalatra.sbt.PluginKeys._
 import com.mojolly.scalate.ScalatePlugin._
 import ScalateKeys._
 
-object TransportsimBuild extends Build {
+object TransportSimBuild extends Build {
   val Organization = "com.github.davidbailey"
   val Name = "TransportSim"
   val Version = "0.1.0-SNAPSHOT"
