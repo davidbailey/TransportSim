@@ -3,7 +3,7 @@ package com.github.davidbailey.TransportSim
 import org.scalatra._
 import scalate.ScalateSupport
 
-class TransportSimServlet extends TransportsimStack {
+class TransportSimServlet extends TransportSimStack {
 
   get("/") {
     <html>
