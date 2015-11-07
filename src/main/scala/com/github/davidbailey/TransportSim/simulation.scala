@@ -2,9 +2,9 @@ import scala.util.Random
 import scala.collection.mutable.ListBuffer
 //import io.plasmap.parser.OsmParser
 import models.Models._
-import org.apache.spark.SparkContext
-import org.apache.spark.SparkContext._
-import org.apache.spark.SparkConf
+//import org.apache.spark.SparkContext
+//import org.apache.spark.SparkContext._
+//import org.apache.spark.SparkConf
 
 // read the network from https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
 // with https://github.com/plasmap/geow
