@@ -15,8 +15,8 @@ import org.apache.spark.SparkConf
 
 object Main {
   // val routes = io.Source.fromFile(System.getProperty("user.home") + "/Desktop/maps/routes.polylines").getLines.toList
-  val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
-  val routesFile = sc.textFile(routesFile)
+  // val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
+  // val routesFile = sc.textFile(routesFile)
   
   def generatePeople {
     var mutablePeople = new ListBuffer[Person]
