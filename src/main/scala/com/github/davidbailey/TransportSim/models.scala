@@ -5,14 +5,14 @@ object Models {
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
-  class Distance (distance: Double) {
+  class Distance (distance: Double) extends Serializable {
     def asFeet = distance
     def asMiles = distance * 0.0001893939394
     def asMeters = distance * 0.3048
     def asKilometers = distance * 0.0003048
   }
 
-  class Point (x_in: Double, y_in: Double) { // OSM: Node
+  class Point (x_in: Double, y_in: Double) extends Serializable { // OSM: Node
     val x = x_in
     val y = y_in
   }
@@ -22,8 +22,8 @@ import scala.collection.mutable.ListBuffer
   class LineString (points_in: List[Point]) {
     val points = points_in
   }
-
-  class Person { // basic agent
+  
+  class Person extends Serializable { // basic agent
     var inVehicle = false
     var isDriver = false
     var arrived = false
@@ -38,7 +38,7 @@ import scala.collection.mutable.ListBuffer
     }
   }
 
-  abstract class Vehicle {
+  abstract class Vehicle extends Serializable {
     val nullPerson: Person = null
     var driver = nullPerson
     val subtype: String
