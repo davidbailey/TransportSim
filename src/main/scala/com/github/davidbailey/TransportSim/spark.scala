@@ -1,4 +1,8 @@
 import models.Models._
+import org.apache.spark.SparkContext
+import org.apache.spark.SparkConf
+
+val conf = new SparkConf().setMaster("local[2]").setAppName("CountingSheep").set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
 
 // Bicycle Map
 
