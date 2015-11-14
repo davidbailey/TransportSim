@@ -12,16 +12,11 @@ import scala.collection.mutable.ListBuffer
     def asKilometers = distance * 0.0003048
   }
 
-  class Point (x_in: Double, y_in: Double) { // OSM: Node
-    val x = x_in
-    val y = y_in
-  }
+  case class Point (x: Double, y: Double) // OSM: Node
 
   def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
 
-  class LineString (points_in: List[Point]) {
-    val points = points_in
-  }
+  case class LineString (points: List[Point]) 
   
   class Person { // basic agent
     var inVehicle = false
@@ -39,8 +34,7 @@ import scala.collection.mutable.ListBuffer
   }
 
   abstract class Vehicle {
-    val nullPerson: Person = null
-    var driver = nullPerson
+    var driver = None: Option[Person]
     val subtype: String
     var passengers = ListBuffer[Person]()
     val maxPassengers: Int
@@ -153,8 +147,7 @@ import scala.collection.mutable.ListBuffer
     val length = 16.0
     val x = Random.nextInt
     val y = Random.nextInt
-    val nullCar: Car = null
-    var occupant = nullCar
+    var occupant = None: Option[Car]
     def view {
       print("{\"type\"=\"parkingSpace\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
     }

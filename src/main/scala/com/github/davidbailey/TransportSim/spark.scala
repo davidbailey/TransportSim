@@ -3,6 +3,7 @@ import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
 
 val conf = new SparkConf().setMaster("local[2]").setAppName("CountingSheep").set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
+val sc = new SparkContext(conf)
 
 // Bicycle Map
 
@@ -10,38 +11,35 @@ val p1 = new Person
 val p2 = new Person
 val p3 = new Person
 val People = Array(p1,p2,p3)
+val sparkPeople = sc.parallelize(People)
 
+val b0 = new Bicycle
 val b1 = new Bicycle
 val b2 = new Bicycle
 val b3 = new Bicycle
 val Bicycles = Array(b1,b2,b3)
+val sparkBicycles = sc.parallelize(Bicycles)
 
-b1.driver = p1
-b2.driver = p2
-b3.driver = p3
-
-val nullBicycle = new Bicycle
+b1.driver = Some(p1)
+b2.driver = Some(p2)
+b3.driver = Some(p3)
 
 def findBicycleMap(b: Bicycle, p: Person): Bicycle = b.driver match {
   case `p` => b
-  case _ => nullBicycle
+  case _ => b4
 }
 
 def findBicycleReduce(b1: Bicycle, b2: Bicycle): Bicycle = b1 match {
-  case `nullBicycle` => b2
+  case `b4` => b2
   case _ => b1
 }
-
-val sparkBicycles = sc.parallelize(Bicycles)
-val sparkPeople = sc.parallelize(People)
-sparkBicycles.map( b => findBicycleMap(b,p1)).reduce(findBicycleReduce)
 
 def findBicycle(b: Array[Bicycle], p: Person): Bicycle = {
   b.map( b => findBicycleMap(b,p)).reduceLeft(findBicycleReduce)
 }
 
 findBicycle(Bicycles,p1).driver
-
+sparkBicycles.map( b => findBicycleMap(b,p1)).reduce(findBicycleReduce)
 
 // Any Map
 def findBicycleMap(b: Bicycle, p: Person): Any = b.driver match {
