@@ -5,25 +5,26 @@ object Models {
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 
-  class Distance (distance: Double) {
+  class Distance (distance: Double) extends Serializable {
     def asFeet = distance
     def asMiles = distance * 0.0001893939394
     def asMeters = distance * 0.3048
     def asKilometers = distance * 0.0003048
   }
 
-  case class Point (x: Double, y: Double) // OSM: Node
+  case class Point (x: Double, y: Double) extends Serializable // OSM: Node
 
   def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
+  val origin = Point(0,0)
 
-  case class LineString (points: List[Point]) 
+  case class LineString (points: List[Point]) extends Serializable
+  def RandomLineString = LineString(List(origin,RandomPoint))
   
-  class Person { // basic agent
+  class Person (route: LineString) extends Serializable { // basic agent
     var inVehicle = false
     var isDriver = false
     var arrived = false
     var travelTime: Int = 0
-    var route = List()
     var currentRouteSegment = 0
     var centroid = RandomPoint
     var width = new Distance (1.5 + Random.nextDouble)
@@ -33,7 +34,7 @@ import scala.collection.mutable.ListBuffer
     }
   }
 
-  abstract class Vehicle {
+  abstract class Vehicle extends Serializable {
     var driver = None: Option[Person]
     val subtype: String
     var passengers = ListBuffer[Person]()
@@ -82,7 +83,7 @@ import scala.collection.mutable.ListBuffer
     var centroid = RandomPoint
   }
 
-  class Track {
+  class Track extends Serializable {
     val width = 4.708
   }
 
@@ -90,31 +91,35 @@ import scala.collection.mutable.ListBuffer
     val tracks: List[Track]
   }
 
-  class Lane { 
+  abstract class Lane extends Serializable {
+    val width: Double
+  }
+
+  class GeneralLane extends Lane { 
     val width = 10.0
   }
 
-  class FreewayLane { 
+  class FreewayLane extends Lane { 
     val width = 13.0
   }
 
-  class ParkingLane { 
+  class ParkingLane extends Lane { 
     val width = 10.0
   }
 
-  class BikeLane { 
+  class BikeLane extends Lane { 
     val width = 5.0
   }
 
-  class BusLane { 
+  class BusLane extends Lane { 
     val width = 10.0
   }
 
-  class Sidewalk { 
+  class Sidewalk extends Lane { 
     val width = 4.0
   }
 
-  abstract class HalfRoad { // OSM: Way w/ oneway != yes
+  abstract class HalfRoad extends Serializable { // OSM: Way w/ oneway != yes
     val lanes = List[Lane]()
     val parkingLane: ParkingLane
     val bikeLane: BikeLane
@@ -122,27 +127,27 @@ import scala.collection.mutable.ListBuffer
     val sidewalk: Sidewalk
   }
 
-  abstract class TwoWayRoad { // OSM: Way w/ oneway = yes
+  abstract class TwoWayRoad extends Serializable { // OSM: Way w/ oneway = yes
     val wayOne: HalfRoad
     val wayTwo: HalfRoad
     val centerLine: LineString
   }
 
-  abstract class OneWayRoad { // OSM: lanes (only sometimes)
+  abstract class OneWayRoad extends Serializable { // OSM: lanes (only sometimes)
     val wayOne: HalfRoad
     val centerLine: LineString
   }
 
-  class OneWayFreeway {
+  class OneWayFreeway extends Serializable {
     val freewayLanes = List[Lane]()
   }
 
-  abstract class Freeway {
+  abstract class Freeway extends Serializable {
     val wayOne: OneWayFreeway
     val wayTwo: OneWayFreeway
   }
 
-  class ParkingSpace {
+  class ParkingSpace extends Serializable {
     val width = 8.0
     val length = 16.0
     val x = Random.nextInt
