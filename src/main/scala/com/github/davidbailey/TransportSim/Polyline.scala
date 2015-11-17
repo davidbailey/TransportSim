@@ -2,18 +2,20 @@
 
 package main
 
+import models.Models.Point
+
 class Polyline {
 
-  def encode(coordinates: List[LatLng]): String = {
+  def encode(coordinates: List[Point]): String = {
     coordinates.foldLeft[List[(BigDecimal,BigDecimal)]](Nil)({(acc, coordinate) =>
       acc match {
-        case Nil => List((coordinate.lat, coordinate.lng))
+        case Nil => List((coordinate.lat, coordinate.lon))
         case differences =>
           val currentPos = differences.reduceLeft((pos, diff) => (pos._1 + diff._1, pos._2 + diff._2))
-          (coordinate.lat - currentPos._1, coordinate.lng - currentPos._2)::differences
+          (coordinate.lat - currentPos._1, coordinate.lon - currentPos._2)::differences
       }
-    }).reverse.map{ case (latDiff, lngDiff) =>
-      encodeDifference(latDiff) + encodeDifference(lngDiff)
+    }).reverse.map{ case (latDiff, lonDiff) =>
+      encodeDifference(latDiff) + encodeDifference(lonDiff)
     }.mkString
   }
 
@@ -39,11 +41,11 @@ class Polyline {
     }
   }
 
-  def decode(polyline: String): List[LatLng] = {
-    decodeDifferences(polyline, Nil).foldRight[List[LatLng]](Nil)({(diff, acc) =>
+  def decode(polyline: String): List[Point] = {
+    decodeDifferences(polyline, Nil).foldRight[List[Point]](Nil)({(diff, acc) =>
       acc match {
-        case Nil => List(LatLng(diff._1, diff._2))
-        case coordinates => LatLng(coordinates.head.lat + diff._1, coordinates.head.lng + diff._2)::coordinates
+        case Nil => List(Point(diff._1, diff._2))
+        case coordinates => Point(coordinates.head.lat + diff._1, coordinates.head.lon + diff._2)::coordinates
       }
     }).reverse
   }
@@ -51,8 +53,8 @@ class Polyline {
   def decodeDifferences(polyline: String, differences: List[(BigDecimal, BigDecimal)]): List[(BigDecimal, BigDecimal)] = {
     if (polyline.length > 0) {
       val (latDiff, pl1) = decodeDifference(polyline)
-      val (lngDiff, pl2) = decodeDifference(pl1)
-      decodeDifferences(pl2, (BigDecimal(latDiff/100000.0), BigDecimal(lngDiff/100000.0))::differences)
+      val (lonDiff, pl2) = decodeDifference(pl1)
+      decodeDifferences(pl2, (BigDecimal(latDiff/100000.0), BigDecimal(lonDiff/100000.0))::differences)
     } else {
       differences
     }

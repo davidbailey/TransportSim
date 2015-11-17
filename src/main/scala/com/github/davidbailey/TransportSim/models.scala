@@ -12,7 +12,7 @@ import scala.collection.mutable.ListBuffer
     def asKilometers = distance * 0.0003048
   }
 
-  case class Point (x: Double, y: Double) extends Serializable // OSM: Node
+  case class Point(lat: BigDecimal, lon: BigDecimal) extends Serializable // OSM: Node
 
   def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
   val origin = Point(0,0)
@@ -30,7 +30,7 @@ import scala.collection.mutable.ListBuffer
     var width = new Distance (1.5 + Random.nextDouble)
     var length = new Distance (0.5 + Random.nextDouble)
     def view {
-      print("{\"type\":\"person\", \"x\":\"" + centroid.x + "\", \"y\":\"" + centroid.y + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
+      print("{\"type\":\"person\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
   }
 
@@ -43,7 +43,7 @@ import scala.collection.mutable.ListBuffer
     val length: Distance
     var centroid: Point
     def view {
-      print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"x\":\"" + centroid.x + "\", \"y\":\"" + centroid.y + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
+      print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
   }
 
@@ -150,11 +150,10 @@ import scala.collection.mutable.ListBuffer
   class ParkingSpace extends Serializable {
     val width = 8.0
     val length = 16.0
-    val x = Random.nextInt
-    val y = Random.nextInt
+    val centroid = RandomPoint
     var occupant = None: Option[Car]
     def view {
-      print("{\"type\"=\"parkingSpace\", \"x\":\"" + x + "\", y:\"" + y + "\"}");
+      print("{\"type\"=\"parkingSpace\", \"lat\":\"" + centroid.lat + "\", lon:\"" + centroid.lon + "\"}");
     }
   }
 

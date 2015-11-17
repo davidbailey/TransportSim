@@ -2,9 +2,11 @@ import scala.util.Random
 import scala.collection.mutable.ListBuffer
 //import io.plasmap.parser.OsmParser
 import models.Models._
+import scala.io.Source
 //import org.apache.spark.SparkContext
 //import org.apache.spark.SparkContext._
 //import org.apache.spark.SparkConf
+import Polyline._ //:load Polyline.scala
 
 // read the network from https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
 // with https://github.com/plasmap/geow
@@ -14,19 +16,23 @@ import models.Models._
 //Freeway Route - enter, drive until you exit.
 
 object Main {
-  // val routes = io.Source.fromFile(System.getProperty("user.home") + "/Desktop/maps/routes.polylines").getLines.toList
-  // val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
-  // val routesFile = sc.textFile(routesFile)
-  
-  def generatePeople {
-    var mutablePeople = new ListBuffer[Person]
-    for( p <- 0 to 17000000){
-      var P = new Person
-      mutablePeople += P
-    }  
-    mutablePeople.toList
+  val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
+  val routes = io.Source.fromFile(routesFileName).getLines.toList
+  val sparkRoutes = sc.textFile(routesFileName)
+  val routesDecoded = routes.map(Polyline.decode)
+
+  var mutablePeople = new ListBuffer[Person]
+  var mutableCars = new ListBuffer[Car]
+  for ( r <- routesDecoded ) {
+    val p = new Person(LineString(r))
+    val c = new Car
+    c.driver = Some(p)
+    mutablePeople += p
+    mutableCars += c
   }
-  val People = generatePeople
+
+  val People = mutablePeople.toList
+  val Cars = mutableCars.toList
   
 
   def Transport(p: Person) {
