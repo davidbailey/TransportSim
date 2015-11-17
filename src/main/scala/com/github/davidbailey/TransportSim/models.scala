@@ -14,13 +14,14 @@ import scala.collection.mutable.ListBuffer
 
   case class Point(lat: BigDecimal, lon: BigDecimal) extends Serializable // OSM: Node
 
-  def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
   val origin = Point(0,0)
+  def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
+  def RandomPoints = List(origin,RandomPoint)
 
   case class LineString (points: List[Point]) extends Serializable
   def RandomLineString = LineString(List(origin,RandomPoint))
   
-  class Person (route: LineString) extends Serializable { // basic agent
+  class Person (route: List[Point]) extends Serializable { // basic agent
     var inVehicle = false
     var isDriver = false
     var arrived = false
