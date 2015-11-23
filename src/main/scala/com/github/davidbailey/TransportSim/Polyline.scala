@@ -4,7 +4,7 @@ package Polyline
 
 import models.Models.Point
 
-class Polyline {
+object Polyline {
 
   def encode(coordinates: List[Point]): String = {
     coordinates.foldLeft[List[(BigDecimal,BigDecimal)]](Nil)({(acc, coordinate) =>
