@@ -1,6 +1,6 @@
 // from https://github.com/trifectalabs/polyline-scala
 
-package main
+package Polyline
 
 import models.Models.Point
 

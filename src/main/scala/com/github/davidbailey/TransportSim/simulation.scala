@@ -1,7 +1,7 @@
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import models.Models._
-import Polyline._
+import Polyline.Polyline.decode
 //import io.plasmap.parser.OsmParser
 //import org.apache.spark.SparkContext
 //import org.apache.spark.SparkContext._
@@ -17,7 +17,7 @@ object Main {
   val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
   val routes = io.Source.fromFile(routesFileName).getLines.toList
   //val sparkRoutes = sc.textFile(routesFileName)
-  val routesDecoded = routes.map(Polyline.decode)
+  val routesDecoded = routes.map(decode)
 
   var mutablePeople = new ListBuffer[Person]
   var mutableCars = new ListBuffer[Car]
