@@ -8,10 +8,18 @@ class TransportSimServlet extends TransportSimStack {
   get("/") {
     <html>
       <body>
-        <h1>Hello, world!</h1>
-        Say <a href="hello-scalate">hello to Scalate</a>.
+        <h1>Welcome to TransportSim!</h1>
+        <a href="/TransportSim/">Get Started</a>.
       </body>
     </html>
+  }
+
+  get("/TransportSim/") {
+    <html>
+      <body>
+      </body>
+    </html>
+
   }
 
 }

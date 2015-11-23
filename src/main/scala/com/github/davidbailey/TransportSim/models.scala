@@ -20,18 +20,38 @@ import scala.collection.mutable.ListBuffer
 
   case class LineString (points: List[Point]) extends Serializable
   def RandomLineString = LineString(List(origin,RandomPoint))
+
+  def routeFollow (route: List[Point], currentRouteSegment: Int, centroid: Point) : (Int, Point) = {
+    val currentPoint = route{currentRouteSegment}
+    val nextPoint = route{currentRouteSegment + 1}
+    return (currentRouteSegment + 1, nextPoint)
+  }
   
-  class Person (route: List[Point]) extends Serializable { // basic agent
-    var inVehicle = false
-    var isDriver = false
+  class Person (r: List[Point]) extends Serializable { // basic agent
+    val route = r
     var arrived = false
     var travelTime: Int = 0
     var currentRouteSegment = 0
-    var centroid = RandomPoint
-    var width = new Distance (1.5 + Random.nextDouble)
-    var length = new Distance (0.5 + Random.nextDouble)
+    var centroid = route{0}
+    var vehicle = false
+    val width = new Distance (1.5 + Random.nextDouble)
+    val length = new Distance (0.5 + Random.nextDouble)
+    //var vehicle = None: Option[Vehicle]
     def view {
-      print("{\"type\":\"person\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
+      print("{\"type\":\"person\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\", \"arrived\":\"" + arrived + "\"}");
+    }
+    def transport {
+      if (arrived == false) {
+	travelTime = travelTime + 1
+	if (!vehicle) {
+	  val transportReturn = routeFollow(route, currentRouteSegment, centroid)
+	  currentRouteSegment = transportReturn._1
+	  centroid = transportReturn._2
+	}
+        if (currentRouteSegment == route.length - 1) {
+          arrived = true
+        }
+      }
     }
   }
 
@@ -45,6 +65,20 @@ import scala.collection.mutable.ListBuffer
     var centroid: Point
     def view {
       print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
+    }
+    def transport = driver match {
+      case Some(driver) =>
+	if (driver.arrived == false) {
+	  driver.travelTime = driver.travelTime + 1
+	  val transportReturn = routeFollow(driver.route, driver.currentRouteSegment, driver.centroid)
+	  driver.currentRouteSegment = transportReturn._1
+	  driver.centroid = transportReturn._2
+          centroid = driver.centroid
+	  if (driver.currentRouteSegment == driver.route.length - 1) {
+	    driver.arrived = true
+	  }
+	}
+      case None => false
     }
   }
 

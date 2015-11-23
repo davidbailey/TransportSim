@@ -16,30 +16,32 @@ import Polyline._
 object Main {
   val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
   val routes = io.Source.fromFile(routesFileName).getLines.toList
-  val sparkRoutes = sc.textFile(routesFileName)
+  //val sparkRoutes = sc.textFile(routesFileName)
   val routesDecoded = routes.map(Polyline.decode)
-
-/*
-#routing engine
-  ModeChoice = Safety, Speed, Comfort, Cost
-    BicycleInBikeLane = 90,speed,90
-    BicycleInProtectedBikeLane = 99,speed,90
-    Bus = 100, speed, 90
-    Car = 90, speed, 90
-*/
 
   var mutablePeople = new ListBuffer[Person]
   var mutableCars = new ListBuffer[Car]
   var mutableBicycles = new ListBuffer[Bicycle]
+ 
   for ( r <- routesDecoded ) {
     val p = new Person(r)
     mutablePeople += p
+    // Replace WalkCarBike with Safety, Time, Comfort, and Cost Choice based on the Person
+    val WalkCarBike = Random.nextInt(100)
+    if (WalkCarBike <= 80) {
       val c = new Car
+      //p.vehicle = Some(c)
+      p.vehicle = true
       c.driver = Some(p)
       mutableCars += c
-      val b = new Bicycle 
+    }
+    if (80 < WalkCarBike && WalkCarBike < 83) {
+      val b = new Bicycle
+      //p.vehicle = Some(b)
+      p.vehicle = true
       b.driver = Some(p)
       mutableBicycles += b
+    }
   }
 
   val People = mutablePeople.toList
@@ -47,8 +49,13 @@ object Main {
   val Bicycles = mutableBicycles.toList
 
   for (a <- 1 to 10) {
-    println("Round " + a)
+    println("\n\nRound " + a + "\n")
     People.map(p => p.view)
     People.map(p => p.transport)
+    Cars.map(c => c.view)
+    Cars.map(c => c.transport)
+    Bicycles.map(b => b.view)
+    Bicycles.map(b => b.transport)
+    //Thread.sleep(1000)
   }
 }
