@@ -1,6 +1,8 @@
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkConf
 
+object spark {
+
 val conf = new SparkConf().setAppName("TransportSim")
 val sc = new SparkContext(conf)
 
@@ -77,3 +79,5 @@ def findAnyReduce(a1: Any, a2: Any): Any = a1 match {
 
 Bicycles.map( b => findBicycleMap(b,p1)).reduceLeft(findAnyReduce).asInstanceOf[Bicycle].driver
 */
+
+}
