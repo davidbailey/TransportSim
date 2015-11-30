@@ -1,7 +1,7 @@
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
-import models.Models._
-import Polyline.Polyline.decode
+import Models._ //:load models.scala
+import Polyline.decode //:load Polyline.scala
 //import io.plasmap.parser.OsmParser
 //import org.apache.spark.SparkContext
 //import org.apache.spark.SparkContext._
@@ -17,28 +17,27 @@ object Main {
   val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
   val routes = io.Source.fromFile(routesFileName).getLines.toList
   //val sparkRoutes = sc.textFile(routesFileName)
-  val routesDecoded = routes.map(decode)
+  //val routesDecoded = routes.map(decode)
+  val routesDecoded = routes.map(Polyline.decode)
 
-  var mutablePeople = new ListBuffer[Person]
-  var mutableCars = new ListBuffer[Car]
-  var mutableBicycles = new ListBuffer[Bicycle]
+  var mutablePeople = new ListBuffer[Models.Person]
+  var mutableCars = new ListBuffer[Models.Car]
+  var mutableBicycles = new ListBuffer[Models.Bicycle]
  
   for ( r <- routesDecoded ) {
-    val p = new Person(r)
+    val p = new Models.Person(r)
     mutablePeople += p
     // Replace WalkCarBike with Safety, Time, Comfort, and Cost Choice based on the Person
     val WalkCarBike = Random.nextInt(100)
     if (WalkCarBike <= 80) {
-      val c = new Car
-      //p.vehicle = Some(c)
-      p.vehicle = true
+      val c = new Models.Car
+      p.vehicle = Some(c)
       c.driver = Some(p)
       mutableCars += c
     }
     if (80 < WalkCarBike && WalkCarBike < 83) {
-      val b = new Bicycle
-      //p.vehicle = Some(b)
-      p.vehicle = true
+      val b = new Models.Bicycle
+      p.vehicle = Some(b)
       b.driver = Some(p)
       mutableBicycles += b
     }
@@ -53,9 +52,7 @@ object Main {
     People.map(p => p.view)
     People.map(p => p.transport)
     Cars.map(c => c.view)
-    Cars.map(c => c.transport)
     Bicycles.map(b => b.view)
-    Bicycles.map(b => b.transport)
     //Thread.sleep(1000)
   }
 }
