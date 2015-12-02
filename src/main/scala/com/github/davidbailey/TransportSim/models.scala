@@ -42,7 +42,7 @@ import scala.collection.mutable.ListBuffer
     }
   }
 
-  abstract class Vehicle (c: Point)  extends Serializable {
+  abstract class Vehicle extends Serializable {
     var driver = None: Option[Person]
     val subtype: String
     var passengers = ListBuffer[Person]()
@@ -50,31 +50,34 @@ import scala.collection.mutable.ListBuffer
     val width: Distance
     val length: Distance
     var crashed = false
-    var centroid = c
+    var centroid: Point 
     def view {
       print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
   }
 
-  class Bicycle extends Vehicle {
+  class Bicycle (c: Point) extends Vehicle {
     val subtype = "Bicycle"
     val maxPassengers = 1
     val width = new Distance (2.0 + Random.nextDouble)
     val length = new Distance (6.0 + Random.nextDouble)
+    var centroid = c
   }
 
-  class Car extends Vehicle {
+  class Car (c: Point) extends Vehicle {
     val subtype = "Car"
     val maxPassengers = 4
     val width = new Distance (6.0 + Random.nextDouble)
     val length = new Distance (12.0 + Random.nextDouble)
+    var centroid = c
   }
 
-  class Bus extends Vehicle {
+  class Bus (c: Point) extends Vehicle {
     val subtype = "Bus"
     val maxPassengers = 84
     val width = new Distance (8.0)
     val length = new Distance (40.0)
+    var centroid = c
   }
 
   abstract class LightRail extends Vehicle {
@@ -124,7 +127,7 @@ import scala.collection.mutable.ListBuffer
   }
 
   abstract class HalfRoad extends Serializable { // OSM: Way w/ oneway != yes
-    val lanes = List[Lane]()
+    val lanes = List[Lane]
     val parkingLane: ParkingLane
     val bikeLane: BikeLane
     val busLane: BusLane
@@ -134,16 +137,16 @@ import scala.collection.mutable.ListBuffer
   abstract class TwoWayRoad extends Serializable { // OSM: Way w/ oneway = yes
     val wayOne: HalfRoad
     val wayTwo: HalfRoad
-    val centerLine: LineString
+    val centerLine: List[Point]
   }
 
   abstract class OneWayRoad extends Serializable { // OSM: lanes (only sometimes)
     val wayOne: HalfRoad
-    val centerLine: LineString
+    val centerLine: List[Point]
   }
 
   class OneWayFreeway extends Serializable {
-    val freewayLanes = List[Lane]()
+    val freewayLanes = List[Lane]
   }
 
   abstract class Freeway extends Serializable {
