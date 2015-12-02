@@ -127,7 +127,7 @@ import scala.collection.mutable.ListBuffer
   }
 
   abstract class HalfRoad extends Serializable { // OSM: Way w/ oneway != yes
-    val lanes = List[Lane]()
+    val lanes: List[Lane]
     val parkingLane: ParkingLane
     val bikeLane: BikeLane
     val busLane: BusLane
@@ -145,8 +145,8 @@ import scala.collection.mutable.ListBuffer
     val centerLine: List[Point]
   }
 
-  class OneWayFreeway extends Serializable {
-    val freewayLanes = List[Lane]()
+  abstract class OneWayFreeway extends Serializable {
+    val freewayLanes: List[Lane]
   }
 
   abstract class Freeway extends Serializable {
