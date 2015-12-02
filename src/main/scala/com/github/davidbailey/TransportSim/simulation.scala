@@ -30,13 +30,13 @@ object Main {
     // Replace WalkCarBike with Safety, Time, Comfort, and Cost Choice based on the Person
     val WalkCarBike = Random.nextInt(100)
     if (WalkCarBike <= 80) {
-      val c = new Models.Car
+      val c = new Models.Car(p.route{0})
       p.vehicle = Some(c)
       c.driver = Some(p)
       mutableCars += c
     }
     if (80 < WalkCarBike && WalkCarBike < 83) {
-      val b = new Models.Bicycle
+      val b = new Models.Bicycle(p.route{0})
       p.vehicle = Some(b)
       b.driver = Some(p)
       mutableBicycles += b

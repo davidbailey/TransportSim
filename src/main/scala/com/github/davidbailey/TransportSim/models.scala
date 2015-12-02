@@ -12,18 +12,12 @@ import scala.collection.mutable.ListBuffer
 
   case class Point(lat: BigDecimal, lon: BigDecimal) extends Serializable // OSM: Node
 
-  val origin = Point(0,0)
-  def RandomPoint = new Point(Random.nextInt + Random.nextDouble, Random.nextInt + Random.nextDouble)
-  def RandomPoints = List(origin,RandomPoint)
-
-  case class LineString (points: List[Point]) extends Serializable
-  def RandomLineString = LineString(List(origin,RandomPoint))
-
   class Person (r: List[Point]) extends Serializable { // basic agent
     val route = r
     val width = new Distance (1.5 + Random.nextDouble)
     val length = new Distance (0.5 + Random.nextDouble)
     var arrived = false
+    var crashed = false
     var travelTime: Int = 0
     var currentRouteSegment = 0
     var centroid = route{0}
@@ -48,14 +42,15 @@ import scala.collection.mutable.ListBuffer
     }
   }
 
-  abstract class Vehicle extends Serializable {
+  abstract class Vehicle (c: Point)  extends Serializable {
     var driver = None: Option[Person]
     val subtype: String
     var passengers = ListBuffer[Person]()
     val maxPassengers: Int
     val width: Distance
     val length: Distance
-    var centroid: Point
+    var crashed = false
+    var centroid = c
     def view {
       print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
@@ -66,7 +61,6 @@ import scala.collection.mutable.ListBuffer
     val maxPassengers = 1
     val width = new Distance (2.0 + Random.nextDouble)
     val length = new Distance (6.0 + Random.nextDouble)
-    var centroid = RandomPoint
   }
 
   class Car extends Vehicle {
@@ -74,7 +68,6 @@ import scala.collection.mutable.ListBuffer
     val maxPassengers = 4
     val width = new Distance (6.0 + Random.nextDouble)
     val length = new Distance (12.0 + Random.nextDouble)
-    var centroid = RandomPoint
   }
 
   class Bus extends Vehicle {
@@ -82,19 +75,16 @@ import scala.collection.mutable.ListBuffer
     val maxPassengers = 84
     val width = new Distance (8.0)
     val length = new Distance (40.0)
-    var centroid = RandomPoint
   }
 
   abstract class LightRail extends Vehicle {
     val subtype = "LightRail"
     val maxPassengers = 220
-    var centroid = RandomPoint
   }
 
   abstract class HeavyRail extends Vehicle {
     val subtype = "HeavyRail"
     val maxPassengers = 800
-    var centroid = RandomPoint
   }
 
   class Track extends Serializable {
@@ -161,10 +151,10 @@ import scala.collection.mutable.ListBuffer
     val wayTwo: OneWayFreeway
   }
 
-  class ParkingSpace extends Serializable {
+  class ParkingSpace (c: Point) extends Serializable {
     val width = 8.0
     val length = 16.0
-    val centroid = RandomPoint
+    val centroid = c
     var occupant = None: Option[Car]
     def view {
       print("{\"type\"=\"parkingSpace\", \"lat\":\"" + centroid.lat + "\", lon:\"" + centroid.lon + "\"}");
