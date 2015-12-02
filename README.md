@@ -8,11 +8,6 @@ TransportSim: A transportation simulation.
 3. scala/simulation     - simulates all the people moving
 4. http://localhost     - view the models and simulations (openlayers + scalatra REST API)
 
-Scala REPL Use:
-cd src/main/scala
-scala
-:load models.scala
-
 Documentation:
 Time is always in seconds.
 Distances have their own class and can be feet or meters.
