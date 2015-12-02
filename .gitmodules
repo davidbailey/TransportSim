@@ -1,3 +1,0 @@
-[submodule "include/polyline-scala"]
-	path = include/polyline-scala
-	url = https://github.com/trifectalabs/polyline-scala.git
