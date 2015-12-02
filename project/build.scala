@@ -20,6 +20,7 @@ object TransportSimBuild extends Build {
       name := Name,
       version := Version,
       scalaVersion := ScalaVersion,
+      coverageEnabled := true,
       resolvers += Classpaths.typesafeReleases,
       resolvers += "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases",
       resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
