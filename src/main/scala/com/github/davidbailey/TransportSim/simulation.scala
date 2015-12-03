@@ -2,7 +2,7 @@ import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import Models._ //:load models.scala
 import Polyline.decode //:load Polyline.scala
-//import io.plasmap.parser.OsmParser
+import io.plasmap.parser.OsmParser
 //import org.apache.spark.SparkContext
 //import org.apache.spark.SparkContext._
 //import org.apache.spark.SparkConf
