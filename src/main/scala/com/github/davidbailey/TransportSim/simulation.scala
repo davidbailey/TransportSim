@@ -2,23 +2,18 @@ import scala.util.Random
 import scala.collection.mutable.ListBuffer
 import Models._ //:load models.scala
 import Polyline.decode //:load Polyline.scala
-import io.plasmap.parser.OsmParser
-//import org.apache.spark.SparkContext
-//import org.apache.spark.SparkContext._
-//import org.apache.spark.SparkConf
-
-// read the network from https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
-// with https://github.com/plasmap/geow
+import io.plasmap.parser.OsmParser // https://github.com/plasmap/geow
+import org.apache.spark.{SparkContext, SparkConf}
 
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
 
 object Main {
+  val parser = OsmParser("https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2")
   val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
   val routes = scala.io.Source.fromFile(routesFileName).getLines.toList
-  //val sparkRoutes = sc.textFile(routesFileName)
-  //val routesDecoded = routes.map(decode)
   val routesDecoded = routes.map(Polyline.decode)
+  //val sparkRoutes = sc.textFile(routesFileName)
 
   var mutablePeople = new ListBuffer[Models.Person]
   var mutableCars = new ListBuffer[Models.Car]
