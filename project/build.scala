@@ -9,7 +9,7 @@ object TransportSimBuild extends Build {
   val Organization = "com.github.davidbailey"
   val Name = "TransportSim"
   val Version = "0.1.0-SNAPSHOT"
-  val ScalaVersion = "2.11.6"
+  val ScalaVersion = "2.11.7"
   val ScalatraVersion = "2.4.0.RC3"
 
   lazy val project = Project (
