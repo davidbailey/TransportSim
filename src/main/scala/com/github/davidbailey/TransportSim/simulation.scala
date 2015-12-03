@@ -15,7 +15,7 @@ import Polyline.decode //:load Polyline.scala
 
 object Main {
   val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
-  val routes = io.Source.fromFile(routesFileName).getLines.toList
+  val routes = scala.io.Source.fromFile(routesFileName).getLines.toList
   //val sparkRoutes = sc.textFile(routesFileName)
   //val routesDecoded = routes.map(decode)
   val routesDecoded = routes.map(Polyline.decode)
