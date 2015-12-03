@@ -5,8 +5,8 @@ TransportSim: A transportation simulation.
 
 1. python/peopleModel   - generates people (origins and destinations)
 2. python/routeModel    - generates a route for each person (polylines)
-3. scala/simulation     - simulates all the people moving
-4. http://localhost     - view the models and simulations (openlayers + scalatra REST API)
+3. scala/simulation     - simulates all the people moving; sends views to queue as producer 
+4. http://localhost     - view the models and simulations from queue (openlayers + scalatra REST API)
 
 Documentation:
 Time is always in seconds.
