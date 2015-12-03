@@ -25,6 +25,8 @@ import scala.collection.mutable.ListBuffer
     def view {
       print("{\"type\":\"person\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\", \"arrived\":\"" + arrived + "\"}");
     }
+//Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
+//Freeway Route - enter, drive until you exit.
     def transport {
       if (arrived == false) {
 	travelTime = travelTime + 1
