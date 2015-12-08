@@ -32,7 +32,7 @@ object TransportSimBuild extends Build {
         "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
         "io.plasmap" %% "geow" % "0.3.11-SNAPSHOT",
         "org.apache.kafka" %% "kafka" %"0.9.0.0"
-        "org.apache.spark" %% "spark-core" % "1.5.1
+        "org.apache.spark" %% "spark-core" % "1.5.1"
       ),
       scalateTemplateConfig in Compile <<= (sourceDirectory in Compile){ base =>
         Seq(
