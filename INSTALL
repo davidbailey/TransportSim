@@ -1,0 +1,6 @@
+brew install kafka
+zookeeper-server-start.sh /usr/local/etc/zookeeper/zoo.cfg
+kafka-server-start.sh /usr/local/etc/kafka/server.properties
+kafka-topics.sh  --zookeeper localhost:2181 --create --topic people --partitions 1 --replication-factor 1
+kafka-topics.sh  --zookeeper localhost:2181 --create --topic cars --partitions 1 --replication-factor 1
+kafka-topics.sh  --zookeeper localhost:2181 --create --topic bicycles --partitions 1 --replication-factor 1
