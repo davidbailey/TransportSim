@@ -4,6 +4,7 @@ import Models._ //:load models.scala
 import Polyline.decode //:load Polyline.scala
 import io.plasmap.parser.OsmParser // https://github.com/plasmap/geow
 //import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.kafka.clients.producer.KafkaProducer
 
 object Main {
   val parser = OsmParser("https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2")
