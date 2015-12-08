@@ -4,7 +4,9 @@ import Models._ //:load models.scala
 import Polyline.decode //:load Polyline.scala
 import io.plasmap.parser.OsmParser // https://github.com/plasmap/geow
 //import org.apache.spark.{SparkContext, SparkConf}
-import org.apache.kafka.clients.producer.KafkaProducer
+import java.util.Properties
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
+
 
 object Main {
   val parser = OsmParser("https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2")
@@ -40,6 +42,14 @@ object Main {
   val Cars = mutableCars.toList
   val Bicycles = mutableBicycles.toList
 
+  val props = new Properties()
+  props.put("bootstrap.servers", "localhost:9092")
+  props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+  val producer = new KafkaProducer[AnyRef, AnyRef](new ProducerConfig(props))
+  producer.send(new ProducerRecord("topic","testkey","testvalue"))
+  producer.close()
+  
   for (a <- 1 to 10) {
     println("\n\nRound " + a + "\n")
     People.map(p => p.view)
