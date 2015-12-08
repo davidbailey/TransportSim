@@ -5,7 +5,7 @@ import Polyline.decode //:load Polyline.scala
 import io.plasmap.parser.OsmParser // https://github.com/plasmap/geow
 //import org.apache.spark.{SparkContext, SparkConf}
 import java.util.Properties
-import org.apache.kafka.clients.producer.{KafkaProducer, ProducerConfig, ProducerRecord}
+import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 
 object Main {
@@ -46,7 +46,7 @@ object Main {
   props.put("bootstrap.servers", "localhost:9092")
   props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
   props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-  val producer = new KafkaProducer[AnyRef, AnyRef](new ProducerConfig(props))
+  val producer = new KafkaProducer[AnyRef, AnyRef](props)
   producer.send(new ProducerRecord("topic","testkey","testvalue"))
   producer.close()
   
