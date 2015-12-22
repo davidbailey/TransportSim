@@ -34,19 +34,20 @@
         })
       });
       var carsSource = new ol.source.Vector();
+      var format = new ol.format.GeoJSON();
       fetch('api/getCars').then(function(response) {
 	return response.json();
       }).then(function(json) {
-	var format = new ol.format.GeoJSON();
-	var feature = format.readFeature(json, {featureProjection: 'EPSG:3857'});
-	carsSource.addFeature(feature);
+        for (var i = 0; i < json.cars.length; i++) {
+	  var feature = format.readFeature(json.cars[i], {featureProjection: 'EPSG:3857'});
+	  carsSource.addFeature(feature);
+        }
       });
       var vectorLayer = new ol.layer.Vector({
 	source: carsSource,
 	style: stopStyleFunctionCreator()
       });
       map.addLayer(vectorLayer);
-      }
     </script>
   </body>
 </html>

@@ -6,7 +6,7 @@ import pandas
 from random import uniform
 from shapely.geometry import box, Point
 
-tractFile = os.path.expanduser('~/Desktop/maps/tl_2010_06_tabblock10.zip')
+tractFile = os.path.expanduser('~/TransportSim/var/tl_2010_06_tabblock10.zip')
 tracts = geopandas.GeoDataFrame.from_file('/', vfs = 'zip://' + tractFile)
 
 xmax, xmin, ymax, ymin = (-119.97, -116.80, 34.80, 33.33)
@@ -21,7 +21,7 @@ tracts = geopandas.GeoDataFrame(tractsInBox)
 
 ca_od_main_2013s = []
 for i in range(1,6):
-  ca_od_main_i_2013 = pandas.DataFrame.from_csv(os.path.expanduser('~/Desktop/maps/ca_od_2013/ca_od_main_JT0' + str(i) + '_2013.csv'), index_col=False)
+  ca_od_main_i_2013 = pandas.DataFrame.from_csv(os.path.expanduser('~/TransportSim/var/ca_od_2013/ca_od_main_JT0' + str(i) + '_2013.csv'), index_col=False)
   ca_od_main_2013s.append(ca_od_main_i_2013)
 
 ca_od_main_2013 = pandas.concat(ca_od_main_2013s)
@@ -52,4 +52,4 @@ for name, row in wh_coded.iterrows():
     wPoint = randomPointInPolygon(row.geometryW)
     trips.append([hPoint.y, hPoint.x, wPoint.y, wPoint.x])
 
-pandas.DataFrame(trips, columns = ['hY', 'hX', 'wY', 'wX']).to_csv(os.path.expanduser('~/Desktop/maps/trips.csv'))
+pandas.DataFrame(trips, columns = ['hY', 'hX', 'wY', 'wX']).to_csv(os.path.expanduser('~/TransportSim/var/trips.csv'))

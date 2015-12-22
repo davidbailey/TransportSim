@@ -8,7 +8,7 @@ previousCarView = '{}'
 
 @route('/')
 def index():
-  f = open(expanduser('~/TransportSim/python/index.tpl'), 'r')
+  f = open(expanduser('~/TransportSim/src/main/python/templates/index.tpl'), 'r')
   return f.read()
   f.close()
 

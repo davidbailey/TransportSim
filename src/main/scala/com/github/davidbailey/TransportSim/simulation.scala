@@ -8,9 +8,9 @@ import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord} // http://kafka.apache.org/090/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
 
 
-object Main {
-  val parser = OsmParser("https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2")
-  val routesFileName = System.getProperty("user.home") + "/Desktop/maps/routes.polylines"
+object Main extends App {
+//  val parser = OsmParser("https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2")
+  val routesFileName = System.getProperty("user.home") + "/TransportSim/var/routes.polystrings"
   val routes = scala.io.Source.fromFile(routesFileName).getLines.toList
   val routesDecoded = routes.map(Polyline.decode)
   //val sparkRoutes = sc.textFile(routesFileName)
@@ -52,11 +52,12 @@ object Main {
     println("\n\nRound " + a + "\n")
     People.map(p => p.transport)
     val peopleView = People.map(p => p.view)
-    val carView = Cars.map(c => c.view)
+    val carView = Cars.map(c => c.view).reduce((a, b) => a + "," + b)
     val bicycleView = Bicycles.map(b => b.view)
-    producer.send(new ProducerRecord("people", a.toString, peopleView))
-    producer.send(new ProducerRecord("cars", a.toString, carView))
-    producer.send(new ProducerRecord("bicycles", a.toString, bicycleView))
+    println(carView)
+    //producer.send(new ProducerRecord("people", a.toString, peopleView))
+    producer.send(new ProducerRecord("cars", a.toString, "{\"cars\": [" + carView + "]}"))
+    //producer.send(new ProducerRecord("bicycles", a.toString, bicycleView))
     //Thread.sleep(1000)
   }
   producer.close()

@@ -1,6 +1,7 @@
 object Models {
 
 import scala.util.Random
+import scala.math.abs
 import scala.collection.mutable.ListBuffer
 
   class Distance (distance: Double) extends Serializable {
@@ -13,6 +14,7 @@ import scala.collection.mutable.ListBuffer
   case class Point(lat: BigDecimal, lon: BigDecimal) extends Serializable // OSM: Node
 
   class Person (r: List[Point]) extends Serializable { // basic agent
+    val id = abs(Random.nextInt)
     val route = r
     val width = new Distance (1.5 + Random.nextDouble)
     val length = new Distance (0.5 + Random.nextDouble)
@@ -22,8 +24,9 @@ import scala.collection.mutable.ListBuffer
     var currentRouteSegment = 0
     var centroid = route{0}
     var vehicle = None: Option[Vehicle]
-    def view {
-      print("{\"type\":\"person\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\", \"arrived\":\"" + arrived + "\"}");
+    def view: String = {
+      return("{\"type\": \"Feature\", \"id\": " + id + ", \"geometry\": {\"type\": \"Point\", \"coordinates\": [" + centroid.lon/10 + "," + centroid.lat/10 + "] }}")
+      //print("{\"type\":\"person\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\", \"arrived\":\"" + arrived + "\"}");
     }
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
@@ -45,6 +48,7 @@ import scala.collection.mutable.ListBuffer
   }
 
   abstract class Vehicle extends Serializable {
+    val id = abs(Random.nextInt)
     var driver = None: Option[Person]
     val subtype: String
     var passengers = ListBuffer[Person]()
@@ -53,8 +57,9 @@ import scala.collection.mutable.ListBuffer
     val length: Distance
     var crashed = false
     var centroid: Point 
-    def view {
-      print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
+    def view: String = {
+      return("{\"type\": \"Feature\", \"id\": " + id + ", \"geometry\": {\"type\": \"Point\", \"coordinates\": [" + centroid.lon/10 + "," + centroid.lat/10 + "] }}")
+      //print("{\"type\":\"Vehicle\", \"subtype\":\"" + this.subtype + "\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\"}");
     }
   }
 
