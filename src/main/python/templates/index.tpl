@@ -39,15 +39,27 @@
 	return response.json();
       }).then(function(json) {
         for (var i = 0; i < json.cars.length; i++) {
-	  var feature = format.readFeature(json.cars[i], {featureProjection: 'EPSG:3857'});
-	  carsSource.addFeature(feature);
+	      var feature = format.readFeature(json.cars[i], {featureProjection: 'EPSG:3857'});
+	      carsSource.addFeature(feature);
         }
       });
       var vectorLayer = new ol.layer.Vector({
-	source: carsSource,
-	style: stopStyleFunctionCreator()
+	    source: carsSource,
+	    style: stopStyleFunctionCreator()
       });
       map.addLayer(vectorLayer);
+      var refreshCars = function() {
+      var format = new ol.format.GeoJSON();
+      fetch('api/getCars').then(function(response) {
+	return response.json();
+      }).then(function(json) {
+        for (var i = 0; i < json.cars.length; i++) {
+	      var feature = format.readFeature(json.cars[i], {featureProjection: 'EPSG:3857'});
+              carsSource.getFeatureById(feature.getId()).setGeometry(feature.getGeometry())
+        }
+      });
+      }
+      setInterval(refreshCars,1000);
     </script>
   </body>
 </html>
