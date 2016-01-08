@@ -31,9 +31,9 @@ cmake ..
 make
 
 wget http://download.geofabrik.de/north-america/us/california-latest.osm.pbf
-./osrm-extract bremen-latest.osm.pbf
-./osrm-prepare bremen-latest.osrm
-./osrm-routed bremen-latest.osrm
+./osrm-extract california-latest.osm.pbf
+./osrm-prepare california-latest.osrm
+./osrm-routed california-latest.osrm
 
 
 # kafka
