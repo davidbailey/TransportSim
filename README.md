@@ -19,6 +19,8 @@ Distances have their own class and can be feet or meters.
 ```
 git clone https://github.com/davidbailey/TransportSim.git
 
+pip install pandas geopandas shapely requests bottle kafka
+
 # osrm-backend
 brew install boost git cmake libzip libstxxl libxml2 lua51 luajit luabind tbb
 git clone https://github.com/Project-OSRM/osrm-backend.git
@@ -47,6 +49,5 @@ cd TransportSim
 sbt compile
 sbt run
 python src/main/python/view.py
-Launch a browser and open [http://localhost:8080/](http://localhost:8080/).
+Launch a browser and open http://localhost:8080/
 ```
-
