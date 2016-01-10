@@ -46,8 +46,6 @@ kafka-topics.sh  --zookeeper localhost:2181 --create --topic bicycles --partitio
 
 # TransportSim
 cd TransportSim
-sbt compile
-sbt run
 python src/main/python/view.py
 Launch a browser and open http://localhost:8080/
 ```
