@@ -19,7 +19,7 @@ Distances have their own class and can be feet or meters.
 ```
 git clone https://github.com/davidbailey/TransportSim.git
 
-pip install pandas geopandas shapely requests bottle kafka
+pip install pandas geopandas shapely requests bottle kafka-python
 
 # osrm-backend
 brew install boost git cmake libzip libstxxl libxml2 lua51 luajit luabind tbb

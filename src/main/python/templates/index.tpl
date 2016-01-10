@@ -1,65 +1,26 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <style>
-      .map {
-        height: 100%;
-        width: 100%;
-      }
-    </style>
-    <script src="http://openlayers.org/en/v3.12.1/build/ol-debug.js" type="text/javascript"></script>
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
     <title>TransportSim</title>
+    <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=fetch"></script>
   </head>
   <body>
-    <div id="map" class="map"></div>
+    <h1>Welcome to TransportSim.</h1>
+    <input type="submit" value="Start Simulation" onclick="startsimulation()"></input>
     <script type="text/javascript">
-      var stopStyleFunctionCreator = function() {
-	return function(feature, resolution) {
-	  var style =  new ol.style.Style({ 
-	    image: new ol.style.Circle({ radius: 5, fill: new ol.style.Fill({ color: 'rgba(255, 0, 0, 1)' }) }) 
-	  }) 
-	return [style];
-	}
+      var startsimulation = function() {
+        fetch('/startsimulation')
+        setInterval(refresh,500);
       }
-      var tileLayer = new ol.layer.Tile({
-        source: new ol.source.OSM()
-      });
-      var map = new ol.Map({
-        target: 'map',
-        layers: [tileLayer],
-        view: new ol.View({
-          center: ol.proj.transform([-118.385, 34.065], 'EPSG:4326', 'EPSG:3857'),
-          zoom: 9
-        })
-      });
-      var carsSource = new ol.source.Vector();
-      var format = new ol.format.GeoJSON();
-      fetch('api/getCars').then(function(response) {
-	return response.json();
-      }).then(function(json) {
-        for (var i = 0; i < json.cars.length; i++) {
-	      var feature = format.readFeature(json.cars[i], {featureProjection: 'EPSG:3857'});
-	      carsSource.addFeature(feature);
-        }
-      });
-      var vectorLayer = new ol.layer.Vector({
-	    source: carsSource,
-	    style: stopStyleFunctionCreator()
-      });
-      map.addLayer(vectorLayer);
-      var refreshCars = function() {
-      var format = new ol.format.GeoJSON();
-      fetch('api/getCars').then(function(response) {
-	return response.json();
-      }).then(function(json) {
-        for (var i = 0; i < json.cars.length; i++) {
-	      var feature = format.readFeature(json.cars[i], {featureProjection: 'EPSG:3857'});
-              carsSource.getFeatureById(feature.getId()).setGeometry(feature.getGeometry())
-        }
-      });
+      var refresh = function() {
+	fetch('api/getPeople').then(function(response) {
+          return response.json();
+          }).then(function(json) {
+	  if (json.people.length) {
+	    window.open("/simulation","_self");
+	  }
+	});
       }
-      setInterval(refreshCars,1000);
     </script>
   </body>
 </html>

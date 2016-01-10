@@ -3,17 +3,18 @@ import scala.collection.mutable.ListBuffer
 import Models._ //:load models.scala
 import Polyline.decode //:load Polyline.scala
 import io.plasmap.parser.OsmParser // https://github.com/plasmap/geow
-//import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkContext, SparkConf}
 import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord} // http://kafka.apache.org/090/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
-
 
 object Main extends App {
 //  val parser = OsmParser("https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2")
   val routesFileName = System.getProperty("user.home") + "/TransportSim/var/routes.polystrings"
   val routes = scala.io.Source.fromFile(routesFileName).getLines.toList
   val routesDecoded = routes.map(Polyline.decode)
-  //val sparkRoutes = sc.textFile(routesFileName)
+//  val conf = new SparkConf().setAppName("TransportSim").setMaster("spark://localhost:7077")
+//  val sc = new SparkContext(conf)
+//  val sparkRoutes = sc.textFile(routesFileName)
 
   var mutablePeople = new ListBuffer[Models.Person]
   var mutableCars = new ListBuffer[Models.Car]
@@ -44,22 +45,28 @@ object Main extends App {
 
   val props = new Properties()
   props.put("bootstrap.servers", "localhost:9092")
-  props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+  props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+  props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
+  props.put("producer.type", "async") // not sure if this helps issue of slow producing after ~138 rounds
   val producer = new KafkaProducer[AnyRef, AnyRef](props)
   
-  for (a <- 1 to 10) {
+  for (a <- 1 to 100000) {
     println("\n\nRound " + a + "\n")
+    //val mb = 1024*1024
+    //val runtime = Runtime.getRuntime
+    //println("** Used Memory:  " + (runtime.totalMemory - runtime.freeMemory) / mb)
+    //println("** Free Memory:  " + runtime.freeMemory / mb)
+    //println("** Total Memory: " + runtime.totalMemory / mb)
+    //println("** Max Memory:   " + runtime.maxMemory / mb)
     People.map(p => p.transport)
-    val peopleView = People.map(p => p.view)
-    val carView = Cars.map(c => c.view).reduce((a, b) => a + "," + b)
-    val bicycleView = Bicycles.map(b => b.view)
-    println(carView)
-    //producer.send(new ProducerRecord("people", a.toString, peopleView))
-    producer.send(new ProducerRecord("cars", a.toString, "{\"cars\": [" + carView + "]}"))
-    //producer.send(new ProducerRecord("bicycles", a.toString, bicycleView))
-    //Thread.sleep(1000)
+    val peopleView = People.map(p => p.view).reduce((a, b) => a + "," + b)
+    //val carView = Cars.map(c => c.view).reduce((a, b) => a + "," + b)
+    //val bicycleView = Bicycles.map(b => b.view).reduce((a, b) => a + "," + b)
+    //println(carView)
+    producer.send(new ProducerRecord("people", a.toString, "{\"people\": [" + peopleView + "]}"))
+    //producer.send(new ProducerRecord("cars", a.toString, "{\"cars\": [" + carView + "]}"))
+    //producer.send(new ProducerRecord("bicycles", a.toString, "{\"bicycles\": [" + carView + "]}"))
+    Thread.sleep(500)
   }
   producer.close()
-
 }

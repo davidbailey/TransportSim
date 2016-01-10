@@ -24,9 +24,12 @@ import scala.collection.mutable.ListBuffer
     var currentRouteSegment = 0
     var centroid = route{0}
     var vehicle = None: Option[Vehicle]
+    def vehicleType(vehicle: Option[Vehicle]): String = vehicle match {
+      case Some(vehicle) => vehicle.subtype
+      case None => "Person"
+    }
     def view: String = {
-      return("{\"type\": \"Feature\", \"id\": " + id + ", \"geometry\": {\"type\": \"Point\", \"coordinates\": [" + centroid.lon/10 + "," + centroid.lat/10 + "] }}")
-      //print("{\"type\":\"person\", \"lat\":\"" + centroid.lat + "\", \"lon\":\"" + centroid.lon + "\", \"width\":\"" + width.asFeet + "\", \"length\":\"" + length.asFeet + "\", \"arrived\":\"" + arrived + "\"}");
+      return("{\"type\": \"Feature\", \"id\": " + id + ", \"geometry\": {\"type\": \"Point\", \"coordinates\": [" + centroid.lon/10 + "," + centroid.lat/10 + "]}, \"properties\": {\"arrived\": \"" +  arrived + "\", \"crashed\": \"" +  crashed + "\", \"vehicle\": \"" + vehicleType(vehicle) + "\"  }}")
     }
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
