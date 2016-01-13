@@ -34,7 +34,7 @@ object Main extends App {
       c.driver = Some(p)
       mutableCars += c
     }
-    if (80 < WalkCarBike && WalkCarBike < 83) {
+    else if (80 < WalkCarBike && WalkCarBike < 83) {
       val p = new Models.Person(Polyline.decode(bicycleRoutes{a}))
       mutablePeople += p
       val b = new Models.Bicycle(p.route{0})
