@@ -13,13 +13,14 @@ import scala.collection.mutable.ListBuffer
 
   case class Point(lat: BigDecimal, lon: BigDecimal) extends Serializable // OSM: Node
 
-  class Person (r: List[Point]) extends Serializable { // basic agent
+  class Person (r: List[Point], dt: Int) extends Serializable { // basic agent
     val id = abs(Random.nextInt)
     val route = r
     val width = new Distance (1.5 + Random.nextDouble)
     val length = new Distance (0.5 + Random.nextDouble)
     var arrived = false
     var crashed = false
+    var departureTime = dt
     var travelTime: Int = 0
     var currentRouteSegment = 0
     var centroid = route{0}

@@ -8,26 +8,33 @@ import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord} // http://kafka.apache.org/090/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
 
 object Main extends App {
-//  val parser = OsmParser("https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2")
+  val beginDepartures = 21600
+  val endDepartures = 43200
+  val mapFileName = System.getProperty("user.home") + "/TransportSim/var/los-angeles_california.osm.bz2"
+  val parser = OsmParser(mapFileName) // https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
   val footRoutesFileName = System.getProperty("user.home") + "/TransportSim/var/foot/routes.polystrings-1700"
   val footRoutes = scala.io.Source.fromFile(footRoutesFileName).getLines.toList
   val bicycleRoutesFileName = System.getProperty("user.home") + "/TransportSim/var/bicycle/routes.polystrings-1700"
   val bicycleRoutes = scala.io.Source.fromFile(bicycleRoutesFileName).getLines.toList
   val carRoutesFileName = System.getProperty("user.home") + "/TransportSim/var/car/routes.polystrings-1700"
   val carRoutes = scala.io.Source.fromFile(carRoutesFileName).getLines.toList
-//  val conf = new SparkConf().setAppName("TransportSim").setMaster("spark://localhost:7077")
-//  val sc = new SparkContext(conf)
-//  val sparkRoutes = sc.textFile(routesFileName)
+
+  val sc = new SparkContext("local","TransportSim")
+
+  val sparkFootRoutes = sc.textFile(footRoutesFileName)
+  val sparkBicycleRoutes = sc.textFile(bicycleRoutesFileName)
+  val sparkCarRoutes = sc.textFile(carRoutesFileName)
 
   var mutablePeople = new ListBuffer[Models.Person]
   var mutableCars = new ListBuffer[Models.Car]
   var mutableBicycles = new ListBuffer[Models.Bicycle]
  
   for ( a <- 0 to footRoutes.length - 1 ) {
-    // Replace WalkCarBike with Safety, Time, Comfort, and Cost Choice based on the Person
+    // Create alternative to WalkCarBike with Safety, Time, Comfort, and Cost Choice based on the Person
     val WalkCarBike = Random.nextInt(100)
     if (WalkCarBike <= 80) {
-      val p = new Models.Person(Polyline.decode(carRoutes{a}))
+      val departureTime = Random.nextInt(endDepartures-beginDepartures) + beginDepartures
+      val p = new Models.Person(Polyline.decode(carRoutes{a}),departureTime)
       mutablePeople += p
       val c = new Models.Car(p.route{0})
       p.vehicle = Some(c)
@@ -35,7 +42,8 @@ object Main extends App {
       mutableCars += c
     }
     else if (80 < WalkCarBike && WalkCarBike < 83) {
-      val p = new Models.Person(Polyline.decode(bicycleRoutes{a}))
+      val departureTime = Random.nextInt(endDepartures-beginDepartures) + beginDepartures
+      val p = new Models.Person(Polyline.decode(bicycleRoutes{a}),departureTime)
       mutablePeople += p
       val b = new Models.Bicycle(p.route{0})
       p.vehicle = Some(b)
@@ -43,7 +51,8 @@ object Main extends App {
       mutableBicycles += b
     }
     else {
-      val p = new Models.Person(Polyline.decode(footRoutes{a}))
+      val departureTime = Random.nextInt(endDepartures-beginDepartures) + beginDepartures
+      val p = new Models.Person(Polyline.decode(footRoutes{a}),departureTime)
       mutablePeople += p
     }
   }

@@ -4,41 +4,6 @@ import Models.Point
 
 object Polyline {
 
-  def encode(coordinates: List[Point]): String = {
-    coordinates.foldLeft[List[(BigDecimal,BigDecimal)]](Nil)({(acc, coordinate) =>
-      acc match {
-        case Nil => List((coordinate.lat, coordinate.lon))
-        case differences =>
-          val currentPos = differences.reduceLeft((pos, diff) => (pos._1 + diff._1, pos._2 + diff._2))
-          (coordinate.lat - currentPos._1, coordinate.lon - currentPos._2)::differences
-      }
-    }).reverse.map{ case (latDiff, lonDiff) =>
-      encodeDifference(latDiff) + encodeDifference(lonDiff)
-    }.mkString
-  }
-
-  def encodeDifference(diff: BigDecimal): String = {
-    val value = if (diff < 0) {
-      ~((diff * 100000).toInt << 1)
-    } else {
-      (diff * 100000).toInt << 1
-    }
-    encodeFiveBitComponents(value, "")
-  }
-
-  def encodeFiveBitComponents(value: Int, str: String): String = {
-    if (value != 0) {
-      val fiveBitComponent = if (value >= 0x20) {
-        ((value & 0x1f) | 0x20) + 63
-      } else {
-        (value & 0x1f) + 63
-      }
-      encodeFiveBitComponents(value >> 5, str + fiveBitComponent.toChar)
-    } else {
-      str
-    }
-  }
-
   def decode(polyline: String): List[Point] = {
     decodeDifferences(polyline, Nil).foldRight[List[Point]](Nil)({(diff, acc) =>
       acc match {
