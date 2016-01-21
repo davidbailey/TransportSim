@@ -35,6 +35,10 @@ wget http://download.geofabrik.de/north-america/us/california-latest.osm.pbf
 ./osrm-prepare california-latest.osrm
 ./osrm-routed california-latest.osrm
 
+# download osm
+cd var
+wget https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
+bunzip2 los-angeles_california.osm.bz2
 
 # kafka
 brew install kafka
