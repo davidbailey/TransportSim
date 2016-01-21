@@ -1,8 +1,8 @@
 import scala.util.Random
 import scala.collection.mutable.ListBuffer
-import Models._ //:load models.scala
-import Polyline.decode //:load Polyline.scala
-import io.plasmap.parser.OsmParser // https://github.com/plasmap/geow
+import Models._
+import Parser._
+import Polyline.decode
 import org.apache.spark.{SparkContext, SparkConf}
 import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord} // http://kafka.apache.org/090/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
@@ -10,8 +10,6 @@ import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord} // http
 object Main extends App {
   val beginDepartures = 21600
   val endDepartures = 43200
-  val mapFileName = System.getProperty("user.home") + "/TransportSim/var/los-angeles_california.osm.bz2"
-  val parser = OsmParser(mapFileName) // https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
   val footRoutesFileName = System.getProperty("user.home") + "/TransportSim/var/foot/routes.polystrings-1700"
   val footRoutes = scala.io.Source.fromFile(footRoutesFileName).getLines.toList
   val bicycleRoutesFileName = System.getProperty("user.home") + "/TransportSim/var/bicycle/routes.polystrings-1700"
@@ -25,9 +23,9 @@ object Main extends App {
   val sparkBicycleRoutes = sc.textFile(bicycleRoutesFileName)
   val sparkCarRoutes = sc.textFile(carRoutesFileName)
 
-  var mutablePeople = new ListBuffer[Models.Person]
-  var mutableCars = new ListBuffer[Models.Car]
-  var mutableBicycles = new ListBuffer[Models.Bicycle]
+  val mutablePeople = new ListBuffer[Models.Person]
+  val mutableCars = new ListBuffer[Models.Car]
+  val mutableBicycles = new ListBuffer[Models.Bicycle]
  
   for ( a <- 0 to footRoutes.length - 1 ) {
     // Create alternative to WalkCarBike with Safety, Time, Comfort, and Cost Choice based on the Person
@@ -60,6 +58,8 @@ object Main extends App {
   val People = mutablePeople.toList
   val Cars = mutableCars.toList
   val Bicycles = mutableBicycles.toList
+
+  val osm = Parser.Parse
 
   val props = new Properties()
   props.put("bootstrap.servers", "localhost:9092")

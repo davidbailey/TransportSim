@@ -11,7 +11,8 @@ import scala.collection.mutable.ListBuffer
     def asKilometers = distance * 0.0003048
   }
 
-  case class Point(lat: BigDecimal, lon: BigDecimal) extends Serializable // OSM: Node
+  case class Point(lat: BigDecimal, lon: BigDecimal) extends Serializable
+  case class Node(id: Int, point: Point) extends Serializable // OSM: Node
 
   class Person (r: List[Point], dt: Int) extends Serializable { // basic agent
     val id = abs(Random.nextInt)
@@ -136,6 +137,8 @@ import scala.collection.mutable.ListBuffer
   class Sidewalk extends Lane { 
     val width = 4.0
   }
+
+  case class Way(id: Int, centerLine: List[Node]) extends Serializable // OSM: Way
 
   abstract class HalfRoad extends Serializable { // OSM: Way w/ oneway != yes
     val lanes: List[Lane]
