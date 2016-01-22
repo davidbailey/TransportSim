@@ -11,7 +11,7 @@ object Parser { // https://tuxdna.wordpress.com/2014/02/03/a-simple-scala-parser
     val mutableNodes = new ListBuffer[Models.Node]
     val mutableWays = new ListBuffer[Models.Way]
     var wayNodes = new ListBuffer[Models.Node]
-    var id = 0
+    var id = ""
 
     val nodeMatch = """.*lon="(.*)" lat="(.*)" id="(.*)".*""".r
     val wayMatch = """.*id="(.*)".*""".r
@@ -20,17 +20,17 @@ object Parser { // https://tuxdna.wordpress.com/2014/02/03/a-simple-scala-parser
       event match {
 	case EvElemStart(_, "node", tags, _) => {
 	  val nodeMatch(lon,lat,id) = tags.toString
-	  val node = new Models.Node(id.toInt,Models.Point(BigDecimal(lat),BigDecimal(lon)))
+	  val node = new Models.Node(BigInt(id),Models.Point(BigDecimal(lat),BigDecimal(lon)))
 	  mutableNodes += node
 	}
 	case EvElemEnd(_, "node") => {
 	}
 	case EvElemStart(_, "way", tags, _) => {
 	  val wayMatch(tagId) = tags.toString
-	  id = tagId.toInt
+	  id = tagId
 	}
 	case EvElemEnd(_, "way") => {
-	  val way = new Models.Way(id,wayNodes.toList)
+	  val way = new Models.Way(BigInt(id),wayNodes.toList)
 	  mutableWays += way
 	  wayNodes.clear
 	}
