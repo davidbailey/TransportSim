@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/davidbailey/TransportSim.svg?branch=master)](https://travis-ci.org/davidbailey/TransportSim)
 [![Coverage Status](https://coveralls.io/repos/davidbailey/TransportSim/badge.svg?branch=master&service=github)](https://coveralls.io/github/davidbailey/TransportSim?branch=master)
 
+![TransportSim](https://raw.githubusercontent.com/davidbailey/TransportSim/master/TransportSim.gif "TransportSim")
+
 ## Architecture ##
 
 1. python/peopleModel   - generates people (origins and destinations)

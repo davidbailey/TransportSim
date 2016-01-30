@@ -3,7 +3,7 @@ import scala.collection.mutable.ListBuffer
 import Models._
 import Parser._
 import Polyline.decode
-import org.apache.spark.{SparkContext, SparkConf}
+//import org.apache.spark.{SparkContext, SparkConf}
 import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord} // http://kafka.apache.org/090/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
 
@@ -17,11 +17,11 @@ object Main extends App {
   val carRoutesFileName = System.getProperty("user.home") + "/TransportSim/var/car/routes.polystrings-1700"
   val carRoutes = scala.io.Source.fromFile(carRoutesFileName).getLines.toList
 
-  val sc = new SparkContext("local","TransportSim")
+//  val sc = new SparkContext("local","TransportSim")
 
-  val sparkFootRoutes = sc.textFile(footRoutesFileName)
-  val sparkBicycleRoutes = sc.textFile(bicycleRoutesFileName)
-  val sparkCarRoutes = sc.textFile(carRoutesFileName)
+//  val sparkFootRoutes = sc.textFile(footRoutesFileName)
+//  val sparkBicycleRoutes = sc.textFile(bicycleRoutesFileName)
+//  val sparkCarRoutes = sc.textFile(carRoutesFileName)
 
   val mutablePeople = new ListBuffer[Models.Person]
   val mutableCars = new ListBuffer[Models.Car]
@@ -59,7 +59,7 @@ object Main extends App {
   val Cars = mutableCars.toList
   val Bicycles = mutableBicycles.toList
 
-  val osm = Parser.Parse
+//  val osm = Parser.Parse
 
   val props = new Properties()
   props.put("bootstrap.servers", "localhost:9092")
@@ -68,7 +68,7 @@ object Main extends App {
   props.put("producer.type", "async") // not sure if this helps issue of slow producing after ~138 rounds
 
   val producer = new KafkaProducer[AnyRef, AnyRef](props)
-  
+
   for (a <- 1 to 100000) {
     println("\n\nRound " + a + "\n")
     //val mb = 1024*1024
