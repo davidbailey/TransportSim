@@ -3,7 +3,6 @@ import scala.collection.mutable.ListBuffer
 import Models._
 import Parser._
 import Polyline.decode
-//import org.apache.spark.{SparkContext, SparkConf}
 import java.util.Properties
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord} // http://kafka.apache.org/090/javadoc/org/apache/kafka/clients/producer/KafkaProducer.html
 
@@ -16,12 +15,6 @@ object Main extends App {
   val bicycleRoutes = scala.io.Source.fromFile(bicycleRoutesFileName).getLines.toList
   val carRoutesFileName = System.getProperty("user.home") + "/TransportSim/var/car/routes.polystrings-1700"
   val carRoutes = scala.io.Source.fromFile(carRoutesFileName).getLines.toList
-
-//  val sc = new SparkContext("local","TransportSim")
-
-//  val sparkFootRoutes = sc.textFile(footRoutesFileName)
-//  val sparkBicycleRoutes = sc.textFile(bicycleRoutesFileName)
-//  val sparkCarRoutes = sc.textFile(carRoutesFileName)
 
   val mutablePeople = new ListBuffer[Models.Person]
   val mutableCars = new ListBuffer[Models.Car]
@@ -77,7 +70,8 @@ object Main extends App {
     //println("** Free Memory:  " + runtime.freeMemory / mb)
     //println("** Total Memory: " + runtime.totalMemory / mb)
     //println("** Max Memory:   " + runtime.maxMemory / mb)
-    People.map(p => p.transport)
+    People.filter(p => !(p.crashed & p.arrived)).map(p => p.incTravelTime)
+    People.filter(p => !(p.crashed & p.arrived)).map(p => p.newtransport)
     val peopleView = People.map(p => p.view).reduce((a, b) => a + "," + b)
     //val carView = Cars.map(c => c.view).reduce((a, b) => a + "," + b)
     //val bicycleView = Bicycles.map(b => b.view).reduce((a, b) => a + "," + b)

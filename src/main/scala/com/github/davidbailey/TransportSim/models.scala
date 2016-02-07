@@ -23,6 +23,7 @@ import scala.collection.mutable.ListBuffer
     var crashed = false
     var departureTime = dt
     var travelTime: Int = 0
+    var speed: Double = .05
     var currentRouteSegment = 0
     var centroid = route{0}
     var vehicle = None: Option[Vehicle]
@@ -35,19 +36,24 @@ import scala.collection.mutable.ListBuffer
     }
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
+    def incTravelTime { travelTime = travelTime + 1 }
+    def newtransport {
+      val nextRouteSegment = currentRouteSegment + 1
+      val latDelta = route{nextRouteSegment}.lat - route{currentRouteSegment}.lat
+      val lonDelta = route{nextRouteSegment}.lon - route{currentRouteSegment}.lon
+      val theta = math.atan(latDelta.doubleValue / lonDelta.doubleValue)
+      centroid = Point(centroid.lat + math.sin(theta) * speed, centroid.lon + math.cos(theta) * speed)
+    }
     def transport {
-      if (arrived == false) {
-	travelTime = travelTime + 1
-	currentRouteSegment = currentRouteSegment + 1
-	centroid = route{currentRouteSegment}
-	vehicle match {
-	  case Some(vehicle) =>
-	    vehicle.centroid = centroid
-	  case _ => false
-	}
-	if (currentRouteSegment == route.length - 1) {
-	  arrived = true
-	}
+      currentRouteSegment = currentRouteSegment + 1
+      centroid = route{currentRouteSegment}
+      vehicle match {
+	case Some(vehicle) =>
+	  vehicle.centroid = centroid
+	case _ => false
+      }
+      if (currentRouteSegment == route.length - 1) {
+	arrived = true
       }
     }
   }
