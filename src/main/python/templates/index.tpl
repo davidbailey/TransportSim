@@ -6,10 +6,11 @@
   </head>
   <body>
     <h1>Welcome to TransportSim.</h1>
-    <input type="submit" value="Start Simulation" onclick="startsimulation()"></input>
+    <input type="submit" value="Start Simulation" id="submit" onclick="startsimulation()"></input>
     <script type="text/javascript">
       var startsimulation = function() {
-        fetch('/startsimulation')
+        document.getElementById("submit").style.display = 'none';
+        fetch('/startsimulation');
         setInterval(refresh,500);
       }
       var refresh = function() {

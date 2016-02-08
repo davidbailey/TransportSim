@@ -37,14 +37,23 @@ import scala.collection.mutable.ListBuffer
 //Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 //Freeway Route - enter, drive until you exit.
     def incTravelTime { travelTime = travelTime + 1 }
-    def newtransport {
+    def transport1 { // straightaway logic
       val nextRouteSegment = currentRouteSegment + 1
       val latDelta = route{nextRouteSegment}.lat - route{currentRouteSegment}.lat
       val lonDelta = route{nextRouteSegment}.lon - route{currentRouteSegment}.lon
-      val theta = math.atan(latDelta.doubleValue / lonDelta.doubleValue)
-      centroid = Point(centroid.lat + math.sin(theta) * speed, centroid.lon + math.cos(theta) * speed)
+      if (math.sqrt(math.pow(latDelta.doubleValue,2) + math.pow(lonDelta.doubleValue,2)) > speed) {
+        val theta = math.atan(latDelta.doubleValue / lonDelta.doubleValue)
+        centroid = Point(centroid.lat + math.sin(theta) * speed, centroid.lon + math.cos(theta) * speed)
+      }
+      else { // intersection logic
+        currentRouteSegment = nextRouteSegment
+        centroid = route{currentRouteSegment}
+        if (currentRouteSegment == route.length - 1) {
+          arrived = true
+        }
+      }
     }
-    def transport {
+    def transport0 {
       currentRouteSegment = currentRouteSegment + 1
       centroid = route{currentRouteSegment}
       vehicle match {
