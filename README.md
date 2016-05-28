@@ -9,8 +9,8 @@
 
 1. python/peopleModel   - generates people (origins and destinations)
 2. python/routeModel    - generates a route for each person (polylines)
-3. scala/simulation     - simulates people (polylines) moving; sends views to kafka 
-4. python/view          - view the models and simulations from kafka (openlayers + bottle REST API)
+3. python/simulation     - simulates people (polylines) moving; sends views to redis
+4. python/view          - view the models and simulations from redis (openlayers + bottle REST API)
 
 ## Documentation ##
 Time is always in seconds.
@@ -21,7 +21,7 @@ Distances have their own class and can be feet or meters.
 ```
 git clone https://github.com/davidbailey/TransportSim.git
 
-pip install pandas geopandas shapely requests bottle kafka-python
+pip install pandas geopandas shapely requests bottle redis
 
 # osrm-backend
 brew install boost git cmake libzip libstxxl libxml2 lua51 luajit luabind tbb
@@ -42,13 +42,9 @@ cd var
 wget https://s3.amazonaws.com/metro-extracts.mapzen.com/los-angeles_california.osm.bz2
 bunzip2 los-angeles_california.osm.bz2
 
-# kafka
-brew install kafka
-zookeeper-server-start.sh /usr/local/etc/zookeeper/zoo.cfg
-kafka-server-start.sh /usr/local/etc/kafka/server.properties
-kafka-topics.sh  --zookeeper localhost:2181 --create --topic people --partitions 1 --replication-factor 1
-kafka-topics.sh  --zookeeper localhost:2181 --create --topic cars --partitions 1 --replication-factor 1
-kafka-topics.sh  --zookeeper localhost:2181 --create --topic bicycles --partitions 1 --replication-factor 1
+# redis 
+brew install redis 
+redis-server
 
 # TransportSim
 cd TransportSim
