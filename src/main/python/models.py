@@ -17,7 +17,7 @@ class Person:
     self.arrived = False
     self.crashed = False
     self.travelTime = 0
-    self.speed = 0.0
+    self.speed = 5.0
     self.currentRouteSegment = 0
     self.centroid = self.route[0]
     self.vehicle = False
@@ -25,14 +25,15 @@ class Person:
     if self.vehicle: return self.vehicle.subtype
     else: return("Person")
   def view(self):
-    return("{\"type\": \"Feature\", \"id\": " + str(self.id) + ", \"geometry\": {\"type\": \"Point\", \"coordinates\": [" + str(self.centroid[1]/10) + "," + str(self.centroid[0]/10) + "]}, \"properties\": {\"arrived\": \"" +  str(self.arrived) + "\", \"crashed\": \"" +  str(self.crashed) + "\", \"vehicle\": \"" + str(self.vehicleType()) + "\"}}") 
+    return({"type": "Feature", "id": self.id, "geometry": {"type": "Point", "coordinates": [self.centroid[1]/10, self.centroid[0]/10]}, "properties": {"arrived": self.arrived, "crashed": self.crashed, "vehicle": self.vehicleType()}}) 
+    #return("{\"type\": \"Feature\", \"id\": " + str(self.id) + ", \"geometry\": {\"type\": \"Point\", \"coordinates\": [" + str(self.centroid[1]/10) + "," + str(self.centroid[0]/10) + "]}, \"properties\": {\"arrived\": \"" +  str(self.arrived) + "\", \"crashed\": \"" +  str(self.crashed) + "\", \"vehicle\": \"" + str(self.vehicleType()) + "\"}}") 
 # Car/Bike/Ped Route - drive/ride/walk until you hit an intersection, maybe change lanes. at intersection stopLight, stopSign, or go: stright, left, right. Repeat.
 # Freeway Route - enter, drive until you exit.
   def transport(self):
     self.travelTime += 1
     nextRouteSegment = self.currentRouteSegment + 1
     xDelta = self.route[nextRouteSegment][0] - self.route[self.currentRouteSegment][0]
-    yDelta = self.route[neytRouteSegment][1] - self.route[self.currentRouteSegment][1]
+    yDelta = self.route[nextRouteSegment][1] - self.route[self.currentRouteSegment][1]
     if sqrt(xDelta**2+yDelta**2) > self.speed: # straightaway logic
       theta = atan(xDelta / yDelta)
       self.centroid = Point(self.centroid[0] + sin(theta) * self.speed, self.centroid[1] + cos(theta) * self.speed)

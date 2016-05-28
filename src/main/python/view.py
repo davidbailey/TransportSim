@@ -8,8 +8,8 @@ import redis
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 #carsConsumer = KafkaConsumer('cars', group_id='kafka-python-default-group', bootstrap_servers=['localhost:9092'])
 #peopleConsumer = KafkaConsumer('people', group_id='kafka-python-default-group', bootstrap_servers=['localhost:9092'])
-previousCarView = '{}'
-previousPeopleView = '{}'
+previousCarView = {}
+previousPeopleView = {}
 
 @route('/')
 def index():

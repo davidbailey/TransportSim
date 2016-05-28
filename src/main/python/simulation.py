@@ -58,7 +58,7 @@ r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 for a in range(1000):
   print "Round: " + str(a)
-  map(models.Person.transport,filter((lambda x: x.crashed and x.arrived),People))
+  map(models.Person.transport,filter((lambda x: not x.crashed and not x.arrived),People))
   peopleView = { "people": map(models.Person.view,People) }
   #producer.send('people', peopleView)
   r.set('people',json.dumps(peopleView))
