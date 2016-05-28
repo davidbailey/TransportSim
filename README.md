@@ -48,6 +48,7 @@ redis-server
 
 # TransportSim
 cd TransportSim
-python src/main/python/view.py
+python src/view.py
+python src/simulation.py
 Launch a browser and open http://localhost:8080/
 ```
