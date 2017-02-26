@@ -24,14 +24,7 @@ git clone https://github.com/davidbailey/TransportSim.git
 pip install pandas geopandas shapely requests bottle redis
 
 # osrm-backend
-brew install boost git cmake libzip libstxxl libxml2 lua51 luajit luabind tbb
-git clone https://github.com/Project-OSRM/osrm-backend.git
-cd osrm-backend
-mkdir -p build
-cd build
-cmake ..
-make
-
+brew install osrm-backend
 wget http://download.geofabrik.de/north-america/us/california-latest.osm.pbf
 ./osrm-extract california-latest.osm.pbf
 ./osrm-prepare california-latest.osrm
